@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compra Segura de Auto – Capacitación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080C17;
+  --bg2:#0E1525;
+  --surface:#141C30;
+  --surface2:#1A2440;
+  --border:rgba(255,255,255,0.06);
+  --border2:rgba(255,255,255,0.12);
+  --accent:#F2AE30;
+  --accent2:#FF7A40;
+  --green:#0FD98A;
+  --red:#FF4B5C;
+  --blue:#5B9BF8;
+  --purple:#A78BFA;
+  --t1:rgba(255,255,255,0.92);
+  --t2:rgba(255,255,255,0.55);
+  --t3:rgba(255,255,255,0.3);
+  --r:16px;
+  --r2:24px;
+  --mono:'Space Mono',monospace;
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --display:'Bebas Neue',sans-serif;
+  --glow-gold: 0 0 40px rgba(242,174,48,.25);
+  --glow-green: 0 0 40px rgba(15,217,138,.2);
+}
+
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden}
+
+/* ── KEYFRAMES ─────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes ripple{0%{transform:scale(0);opacity:.6}100%{transform:scale(3.5);opacity:0}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes orb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.08)}66%{transform:translate(-20px,35px) scale(.95)}}
+@keyframes confettiDrop{0%{transform:translateY(-30px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(800deg);opacity:0}}
+@keyframes checkIn{0%{transform:scale(0) rotate(-15deg);opacity:0}70%{transform:scale(1.25) rotate(4deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes borderGlow{0%,100%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 0 3px rgba(242,174,48,.25)}}
+@keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+
+/* ── SCREENS ─────────────────────────────────*/
+.screen{display:none;min-height:100vh;animation:fadeIn .35s ease}
+.screen.active{display:flex;flex-direction:column}
+
+/* ═══════════════════════════════════
+   TICKER BAR
+═══════════════════════════════════ */
+.ticker-wrap{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent));
+  background-size:200%;
+  animation:gradShift 4s ease infinite;
+  padding:7px 0;overflow:hidden;
+}
+.ticker-inner{display:flex;white-space:nowrap;animation:ticker 30s linear infinite}
+.ticker-item{
+  display:inline-flex;align-items:center;gap:10px;
+  color:#000;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:0 2.5rem;
+}
+.ticker-dot{width:5px;height:5px;border-radius:50%;background:rgba(0,0,0,.35)}
+
+/* ═══════════════════════════════════
+   LOGIN SCREEN
+═══════════════════════════════════ */
+#screen-login{
+  background:var(--bg);
+  align-items:center;justify-content:center;
+  padding:2rem;position:relative;overflow:hidden;
+}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;animation:orb 14s ease-in-out infinite}
+.orb1{width:600px;height:600px;background:rgba(242,174,48,.09);top:-200px;right:-150px;animation-delay:0s}
+.orb2{width:450px;height:450px;background:rgba(91,155,248,.08);bottom:-100px;left:-80px;animation-delay:-5s}
+.orb3{width:350px;height:350px;background:rgba(15,217,138,.06);top:30%;left:35%;animation-delay:-9s}
+
+/* Grid lines */
+#screen-login::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:72px 72px;
+}
+/* Scanline effect */
+#screen-login::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:120px;
+  background:linear-gradient(transparent,rgba(242,174,48,.015),transparent);
+  animation:scanline 8s linear infinite;pointer-events:none;
+}
+
+.login-wrap{
+  position:relative;z-index:2;
+  width:100%;max-width:460px;
+}
+
+/* Glowing card */
+.login-card{
+  background:rgba(20,28,48,.8);
+  border:1px solid var(--border2);
+  border-radius:28px;
+  padding:3rem 2.5rem;
+  backdrop-filter:blur(24px);
+  box-shadow:0 48px 120px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.07);
+  animation:fadeUp .7s ease both;
+  position:relative;overflow:hidden;
+}
+.login-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 10%,var(--accent) 50%,transparent 90%);
+  opacity:.6;
+}
+
+/* Car icon animated */
+.login-car{
+  font-size:3.5rem;text-align:center;margin-bottom:1.5rem;
+  animation:floatY 3s ease-in-out infinite;
+  filter:drop-shadow(0 8px 24px rgba(242,174,48,.4));
+  display:block;
+}
+
+.login-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(242,174,48,.1);border:1px solid rgba(242,174,48,.2);
+  color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 12px;border-radius:99px;margin-bottom:1.25rem;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.4s ease infinite}
+
+.login-title{
+  font-family:var(--display);
+  font-size:clamp(2.8rem,9vw,4.2rem);
+  line-height:.95;letter-spacing:.03em;color:#fff;
+  margin-bottom:.875rem;
+}
+.login-title .hl{
+  display:inline-block;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+.login-sub{color:var(--t2);font-size:14px;line-height:1.7;margin-bottom:1.75rem}
+
+.feat-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.feat{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border2);
+  color:var(--t2);font-size:12px;font-weight:500;
+  padding:5px 12px;border-radius:99px;
+}
+
+.fld{margin-bottom:1rem}
+.fld-lbl{
+  display:block;color:var(--t3);font-size:11px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;
+}
+.fld-inp{
+  width:100%;padding:13px 18px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border2);
+  border-radius:12px;color:#fff;font-family:var(--sans);font-size:15px;
+  outline:none;transition:all .2s;
+}
+.fld-inp::placeholder{color:rgba(255,255,255,.18)}
+.fld-inp:focus{border-color:var(--accent);background:rgba(242,174,48,.05);box-shadow:0 0 0 3px rgba(242,174,48,.1)}
+.fld-inp.err{border-color:var(--red);box-shadow:0 0 0 3px rgba(255,75,92,.1)}
+.err-msg{color:#FF8A94;font-size:11px;margin-top:4px;display:none}
+.fld-cert-note{
+  font-size:12px;color:var(--t2);line-height:1.55;
+  background:rgba(242,174,48,.06);border:1px solid rgba(242,174,48,.15);
+  border-radius:10px;padding:10px 14px;margin-bottom:.5rem;
+}
+
+.btn-cta{
+  width:100%;margin-top:1.25rem;padding:16px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#000;font-family:var(--sans);font-size:15px;font-weight:800;letter-spacing:.02em;
+  border:none;border-radius:14px;cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:transform .15s,box-shadow .2s;
+  box-shadow:0 8px 28px rgba(242,174,48,.35);
+}
+.btn-cta::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent)}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(242,174,48,.5)}
+.btn-cta:active{transform:scale(.98)}
+
+/* ═══════════════════════════════════
+   HEADER
+═══════════════════════════════════ */
+.app-header{
+  background:rgba(8,12,23,.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:.875rem 1.75rem;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.header-logo{
+  font-family:var(--display);
+  font-size:1.1rem;letter-spacing:.08em;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.header-logo-sub{font-size:.65rem;letter-spacing:.12em;color:var(--t3);text-transform:uppercase;display:block;-webkit-text-fill-color:var(--t3)}
+
+/* Stepper dots */
+.stepper{display:flex;align-items:center;gap:6px}
+.step-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,.12);
+  transition:all .35s;
+}
+.step-dot.done{background:var(--green);box-shadow:0 0 8px rgba(15,217,138,.5)}
+.step-dot.active{
+  background:var(--accent);width:22px;border-radius:99px;
+  box-shadow:0 0 10px rgba(242,174,48,.5);
+}
+.step-count{font-family:var(--mono);font-size:11px;color:var(--t3);margin-left:8px}
+
+.user-chip{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border2);
+  border-radius:99px;padding:4px 14px 4px 5px;
+}
+.user-av{
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#000;font-size:11px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+.user-nm{color:var(--t2);font-size:12px;font-weight:600;max-width:100px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ═══════════════════════════════════
+   OVERVIEW
+═══════════════════════════════════ */
+#screen-overview{background:var(--bg)}
+
+.ov-hero{
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  padding:3rem 1.5rem 2.5rem;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.ov-hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(242,174,48,.08),transparent 65%);
+}
+.ov-hello{
+  font-family:var(--display);
+  font-size:clamp(2rem,7vw,3.2rem);
+  letter-spacing:.05em;color:#fff;margin-bottom:.5rem;position:relative;
+}
+.ov-hello span{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.ov-sub{color:var(--t2);font-size:15px;max-width:460px;margin:0 auto 2rem;line-height:1.65;position:relative}
+
+.ov-stats-row{display:flex;gap:1px;justify-content:center;position:relative}
+.ov-stat{
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  padding:1rem 2rem;
+  text-align:center;
+}
+.ov-stat:first-child{border-radius:14px 0 0 14px}
+.ov-stat:last-child{border-radius:0 14px 14px 0}
+.ov-stat-n{
+  font-family:var(--display);font-size:2.8rem;letter-spacing:.05em;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.ov-stat-l{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+
+.ov-body{max-width:900px;margin:0 auto;padding:2.5rem 1.5rem 6rem}
+.section-label{
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--t3);margin-bottom:1rem;
+}
+
+/* Module grid */
+.mod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:2.5rem}
+.mod-tile{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r2);padding:1.5rem;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .2s,border-color .25s,box-shadow .25s;
+}
+.mod-tile::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transform:scaleX(0);transform-origin:left;transition:transform .3s ease;
+}
+.mod-tile:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.15);box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.mod-tile:hover::after{transform:scaleX(1)}
+.mod-tile.done{border-color:rgba(15,217,138,.2);background:linear-gradient(135deg,rgba(15,217,138,.03),var(--surface))}
+.mod-tile.done::after{transform:scaleX(1);background:linear-gradient(90deg,var(--green),#00B870)}
+
+.tile-tag{
+  display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+  padding:3px 10px;border-radius:99px;margin-bottom:1rem;
+}
+.tag-pending{background:rgba(255,255,255,.05);color:var(--t3)}
+.tag-done{background:rgba(15,217,138,.12);color:var(--green)}
+.tile-icon{font-size:2rem;margin-bottom:.75rem;display:block}
+.tile-title{font-size:13px;font-weight:700;color:#fff;line-height:1.45;margin-bottom:.35rem}
+.tile-intro{font-size:12px;color:var(--t2);line-height:1.55}
+
+/* Start btn */
+.start-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#000;font-family:var(--sans);font-size:15px;font-weight:800;
+  padding:16px 40px;border-radius:16px;border:none;cursor:pointer;
+  margin:0 auto;display:flex;
+  transition:transform .15s,box-shadow .2s;
+  box-shadow:0 10px 30px rgba(242,174,48,.35);
+}
+.start-btn:hover{transform:translateY(-3px);box-shadow:0 18px 45px rgba(242,174,48,.5)}
+.start-btn svg{transition:transform .2s}
+.start-btn:hover svg{transform:translateX(4px)}
+
+/* ═══════════════════════════════════
+   MODULE CONTENT AREA
+═══════════════════════════════════ */
+#screen-module{background:var(--bg)}
+.content-area{flex:1;max-width:840px;margin:0 auto;width:100%;padding:2.5rem 1.5rem 7rem}
+
+/* Module header */
+.m-eyebrow{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(242,174,48,.08);border:1px solid rgba(242,174,48,.18);
+  color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 14px;border-radius:99px;margin-bottom:1.25rem;
+}
+.m-title{
+  font-family:var(--display);
+  font-size:clamp(2rem,6vw,2.8rem);
+  letter-spacing:.03em;line-height:1.05;color:#fff;margin-bottom:.875rem;
+}
+.m-intro{
+  color:var(--t2);font-size:16px;line-height:1.75;
+  padding-bottom:2rem;border-bottom:1px solid var(--border);margin-bottom:1.75rem;
+}
+
+/* Cards */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:1.75rem;margin-bottom:1rem;
+  position:relative;overflow:hidden;
+  animation:fadeUp .4s ease both;
+}
+.card:nth-child(2){animation-delay:.07s}
+.card:nth-child(3){animation-delay:.13s}
+.card:nth-child(4){animation-delay:.19s}
+.card:nth-child(5){animation-delay:.25s}
+
+/* Left accent strip */
+.card-accent{
+  position:absolute;top:0;left:0;bottom:0;width:3px;border-radius:3px 0 0 3px;
+}
+.ca-blue{background:linear-gradient(180deg,var(--blue),#2B5FD8)}
+.ca-green{background:linear-gradient(180deg,var(--green),#00C47F)}
+.ca-gold{background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.ca-red{background:linear-gradient(180deg,var(--red),#D62D3C)}
+.ca-purple{background:linear-gradient(180deg,var(--purple),#7C3AED)}
+
+/* Glow variants */
+.card.glow-gold{box-shadow:inset 0 0 40px rgba(242,174,48,.04)}
+.card.glow-green{box-shadow:inset 0 0 40px rgba(15,217,138,.04)}
+
+.c-icon{
+  width:46px;height:46px;border-radius:13px;
+  display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:1rem;
+}
+.ci-blue{background:rgba(91,155,248,.12);border:1px solid rgba(91,155,248,.15)}
+.ci-green{background:rgba(15,217,138,.1);border:1px solid rgba(15,217,138,.15)}
+.ci-gold{background:rgba(242,174,48,.1);border:1px solid rgba(242,174,48,.15)}
+.ci-red{background:rgba(255,75,92,.1);border:1px solid rgba(255,75,92,.15)}
+.ci-purple{background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.15)}
+
+.c-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:.875rem;line-height:1.3}
+.card p{color:var(--t2);font-size:14px;line-height:1.75}
+
+/* Checklist */
+.cl{list-style:none}
+.cl li{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 0;font-size:14px;color:var(--t2);
+  border-bottom:1px solid rgba(255,255,255,.04);
+  transition:color .15s;
+}
+.cl li:hover{color:var(--t1)}
+.cl li:last-child{border-bottom:none;padding-bottom:0}
+.ck{flex-shrink:0;width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;margin-top:1px}
+.ck-ok{background:rgba(15,217,138,.15);color:var(--green)}
+.ck-warn{background:rgba(255,75,92,.15);color:var(--red)}
+.ck-num{background:rgba(91,155,248,.15);color:var(--blue);font-family:var(--mono);font-weight:700;font-size:9px}
+
+/* Steps */
+.steps{display:flex;flex-direction:column}
+.step{display:flex;gap:16px;position:relative;padding-bottom:1.5rem}
+.step:last-child{padding-bottom:0}
+.step-lhs{display:flex;flex-direction:column;align-items:center}
+.snum{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#000;font-family:var(--mono);font-size:13px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(242,174,48,.3);
+}
+.sline{flex:1;width:1px;background:linear-gradient(180deg,rgba(242,174,48,.3),transparent);margin-top:8px}
+.step:last-child .sline{display:none}
+.sbody{flex:1;padding-top:7px}
+.sbody h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:.3rem}
+.sbody p{font-size:13px;color:var(--t2);line-height:1.65}
+
+/* Two-col */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:.875rem;margin-bottom:1rem}
+@media(max-width:520px){.two-col{grid-template-columns:1fr}}
+.mini{
+  background:rgba(255,255,255,.025);border:1px solid var(--border);
+  border-radius:14px;padding:1.25rem;
+}
+.mini-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:.75rem}
+
+/* Alert / success */
+.alert-box{
+  background:rgba(255,75,92,.05);border:1px solid rgba(255,75,92,.18);
+  border-radius:14px;padding:1.25rem 1.5rem;
+  display:flex;gap:12px;align-items:flex-start;margin-bottom:1rem;
+}
+.alert-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.alert-text{font-size:14px;color:rgba(255,200,200,.85);line-height:1.65}
+.alert-text strong{display:block;font-weight:700;color:#fff;margin-bottom:.3rem}
+
+.success-box{
+  background:rgba(15,217,138,.05);border:1px solid rgba(15,217,138,.18);
+  border-radius:14px;padding:1.25rem 1.5rem;
+  display:flex;gap:12px;align-items:flex-start;margin-bottom:1rem;
+}
+.success-text{font-size:14px;color:rgba(150,255,210,.85);line-height:1.65}
+.success-text strong{display:block;font-weight:700;color:#fff;margin-bottom:.3rem}
+
+.tip-badge{
+  display:inline-block;
+  background:rgba(242,174,48,.12);border:1px solid rgba(242,174,48,.25);
+  color:var(--accent);font-size:11px;font-weight:700;font-family:var(--mono);
+  padding:2px 8px;border-radius:6px;margin-left:4px;
+}
+
+/* Interactive checklist */
+.icl{display:flex;flex-direction:column;gap:.5rem}
+.icl-item{
+  display:flex;align-items:center;gap:14px;
+  background:rgba(255,255,255,.02);border:1px solid var(--border);
+  border-radius:12px;padding:.875rem 1.25rem;
+  cursor:pointer;transition:all .2s;user-select:none;
+}
+.icl-item:hover{border-color:var(--border2);background:rgba(255,255,255,.04)}
+.icl-item.checked{background:rgba(15,217,138,.05);border-color:rgba(15,217,138,.22)}
+.icl-box{
+  width:22px;height:22px;border-radius:7px;flex-shrink:0;
+  border:2px solid rgba(255,255,255,.12);background:transparent;
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  transition:all .2s;
+}
+.icl-item.checked .icl-box{background:var(--green);border-color:var(--green);color:#000;animation:checkIn .3s ease}
+.icl-item span{font-size:14px;color:var(--t2);font-weight:500;transition:color .2s}
+.icl-item.checked span{color:var(--green)}
+
+.cl-prog-wrap{margin-top:1rem}
+.cl-bar-bg{height:3px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+.cl-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),#00C47F);border-radius:99px;transition:width .35s;width:0%}
+.cl-count{font-size:11px;color:var(--t3);margin-top:6px;font-family:var(--mono)}
+
+/* Nav bar */
+.nav-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:2rem 0 0;border-top:1px solid var(--border);margin-top:2rem;
+}
+.btn-back{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 22px;border-radius:12px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border2);
+  color:var(--t2);font-family:var(--sans);font-size:14px;font-weight:600;
+  cursor:pointer;transition:all .15s;
+}
+.btn-back:hover{background:rgba(255,255,255,.08);color:#fff}
+.btn-next{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 28px;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#000;font-family:var(--sans);font-size:14px;font-weight:800;
+  border:none;cursor:pointer;transition:transform .15s,box-shadow .2s;
+  box-shadow:0 6px 20px rgba(242,174,48,.3);
+}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(242,174,48,.45)}
+.btn-next:active{transform:scale(.98)}
+.btn-next:disabled{opacity:.3;cursor:not-allowed;box-shadow:none;transform:none}
+.btn-quiz-cta{background:linear-gradient(135deg,var(--blue),#3B6FD4);box-shadow:0 6px 20px rgba(91,155,248,.3)}
+.btn-quiz-cta:hover{box-shadow:0 12px 32px rgba(91,155,248,.4)}
+
+/* ═══════════════════════════════════
+   QUIZ
+═══════════════════════════════════ */
+#screen-quiz{background:var(--bg)}
+.quiz-area{flex:1;max-width:760px;margin:0 auto;width:100%;padding:2.5rem 1.5rem 7rem}
+
+/* Question */
+.q-num{
+  font-family:var(--mono);font-size:11px;color:var(--t3);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;
+}
+.q-progress-bar{
+  height:3px;background:rgba(255,255,255,.06);border-radius:99px;
+  overflow:hidden;margin-bottom:2rem;
+}
+.q-progress-fill{
+  height:100%;background:linear-gradient(90deg,var(--blue),var(--purple));
+  border-radius:99px;transition:width .4s ease;
+}
+.q-text{
+  font-family:var(--display);
+  font-size:clamp(1.5rem,5vw,2.2rem);
+  letter-spacing:.02em;color:#fff;line-height:1.15;margin-bottom:2rem;
+}
+.q-hint{font-size:12px;color:var(--t3);margin-bottom:1.5rem;font-family:var(--mono)}
+
+/* Options */
+.q-opts{display:flex;flex-direction:column;gap:.625rem;margin-bottom:1.5rem}
+.q-opt{
+  display:flex;align-items:center;gap:14px;
+  background:rgba(255,255,255,.03);border:1px solid var(--border2);
+  border-radius:14px;padding:1.1rem 1.25rem;
+  cursor:pointer;font-size:14px;color:var(--t2);font-weight:500;
+  transition:all .2s;position:relative;overflow:hidden;
+}
+.q-opt::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.03);opacity:0;transition:opacity .2s}
+.q-opt:hover:not(.locked)::after{opacity:1}
+.q-opt:hover:not(.locked){border-color:rgba(255,255,255,.2);color:var(--t1)}
+.opt-ltr{
+  width:32px;height:32px;border-radius:9px;flex-shrink:0;
+  background:rgba(255,255,255,.05);border:1px solid var(--border2);
+  font-family:var(--mono);font-size:12px;font-weight:700;color:var(--t2);
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.q-opt.correct{border-color:rgba(15,217,138,.4);background:rgba(15,217,138,.07);color:var(--t1)}
+.q-opt.correct .opt-ltr{background:var(--green);border-color:var(--green);color:#000}
+.q-opt.wrong{border-color:rgba(255,75,92,.4);background:rgba(255,75,92,.06)}
+.q-opt.wrong .opt-ltr{background:var(--red);border-color:var(--red);color:#fff}
+.q-opt.locked{cursor:default}
+
+.q-feedback{
+  border-radius:13px;padding:1rem 1.25rem;font-size:14px;line-height:1.65;
+  display:none;margin-bottom:1rem;
+}
+.q-feedback.show{display:block;animation:fadeUp .3s ease}
+.q-feedback.ok{background:rgba(15,217,138,.08);border:1px solid rgba(15,217,138,.2);color:rgba(130,255,200,.9)}
+.q-feedback.fail{background:rgba(255,75,92,.08);border:1px solid rgba(255,75,92,.2);color:rgba(255,180,190,.9)}
+
+/* Score */
+.score-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r2);padding:3.5rem 2rem;text-align:center;
+  position:relative;overflow:hidden;
+}
+.score-wrap::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--green),var(--blue));
+}
+.score-emoji{font-size:64px;display:block;margin-bottom:1rem;animation:floatY 3s ease-in-out infinite}
+.score-big{
+  font-family:var(--display);font-size:5.5rem;letter-spacing:.05em;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;margin-bottom:.5rem;
+}
+.score-pct{font-family:var(--mono);font-size:15px;color:var(--t2);margin-bottom:1.25rem}
+.score-msg{font-size:16px;line-height:1.7;color:var(--t2);max-width:460px;margin:0 auto}
+
+/* ═══════════════════════════════════
+   CERTIFICADO
+═══════════════════════════════════ */
+#screen-cert{
+  background:var(--bg);align-items:center;justify-content:center;
+  padding:2rem;position:relative;overflow:hidden;
+}
+#screen-cert::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+  background-size:56px 56px;
+}
+#screen-cert::after{
+  content:'';position:absolute;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(242,174,48,.08),transparent 65%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999}
+.cp{position:absolute;width:10px;height:10px;top:-20px;animation:confettiDrop linear forwards}
+
+.cert-wrap{max-width:700px;width:100%;position:relative;z-index:1;animation:fadeUp .6s ease}
+.cert-paper{
+  background:#fff;border-radius:28px;padding:3rem 2.5rem;
+  text-align:center;position:relative;overflow:hidden;
+  box-shadow:0 60px 140px rgba(0,0,0,.7);
+}
+.cert-paper::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:6px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--green),var(--blue),var(--purple));
+}
+.cert-inner-border{
+  position:absolute;inset:20px;border:1.5px solid rgba(0,0,0,.05);
+  border-radius:14px;pointer-events:none;
+}
+
+.cert-seal{font-size:56px;display:block;margin-bottom:1rem;animation:floatY 4s ease-in-out infinite}
+.cert-pre{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#9CA3AF;margin-bottom:.25rem}
+.cert-headline{font-family:var(--display);font-size:2rem;letter-spacing:.05em;color:#111827}
+.cert-rule{width:64px;height:3px;background:linear-gradient(90deg,#F0B429,#FF6B35);border-radius:99px;margin:.875rem auto}
+.cert-body-text{font-size:14px;color:#6B7280;margin-bottom:.4rem}
+.cert-name-big{
+  font-family:var(--display);
+  font-size:clamp(1.8rem,5vw,3rem);
+  letter-spacing:.04em;color:#111827;margin:.4rem 0;
+}
+.cert-sub-text{font-size:13px;color:#9CA3AF;margin-bottom:1.5rem}
+.cert-course-box{
+  background:#F9FAFB;border:1px solid #E5E7EB;border-radius:14px;
+  padding:1rem 1.5rem;margin-bottom:1.25rem;
+}
+.cert-course-name{font-size:15px;font-weight:700;color:#111827}
+.cert-course-desc{font-size:12px;color:#6B7280;margin-top:2px}
+.cert-badges-row{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem}
+.cert-badge{
+  display:flex;align-items:center;gap:5px;
+  background:#F0FDF4;border:1px solid #BBF7D0;color:#15803D;
+  font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;
+}
+.cert-meta{display:flex;gap:2rem;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap}
+.cert-meta-item{text-align:center}
+.cert-meta-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#9CA3AF;margin-bottom:2px}
+.cert-meta-val{font-size:14px;font-weight:700;color:#111827;font-family:var(--mono)}
+.cert-footer{border-top:1px solid #E5E7EB;padding-top:1.25rem}
+.cert-line{height:2px;width:110px;background:#111827;margin:0 auto 4px}
+.cert-signer{font-size:13px;font-weight:700;color:#111827}
+.cert-signer-role{font-size:11px;color:#9CA3AF}
+
+.btn-print{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#000;font-family:var(--sans);font-size:14px;font-weight:800;
+  padding:13px 30px;border-radius:14px;border:none;cursor:pointer;
+  margin-top:1.5rem;
+  transition:transform .15s,box-shadow .2s;
+  box-shadow:0 8px 24px rgba(242,174,48,.4);
+}
+.btn-print:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(242,174,48,.5)}
+
+/* ═══════════════════════════════════
+   PROMO BANNER
+═══════════════════════════════════ */
+@keyframes promoIn{from{opacity:0;transform:translateY(-16px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+@keyframes urgencePulse{0%,100%{box-shadow:0 0 0 0 rgba(242,174,48,.0)}50%{box-shadow:0 0 0 8px rgba(242,174,48,.12)}}
+@keyframes countFlip{0%{transform:translateY(0);opacity:1}45%{transform:translateY(-14px);opacity:0}55%{transform:translateY(14px);opacity:0}100%{transform:translateY(0);opacity:1}}
+@keyframes fireSpin{0%{transform:scale(1)}50%{transform:scale(1.18) rotate(-5deg)}100%{transform:scale(1)}}
+
+.promo-banner{
+  position:relative;z-index:2;
+  background:linear-gradient(135deg,rgba(242,174,48,.10),rgba(255,122,64,.08),rgba(242,174,48,.10));
+  border:1px solid rgba(242,174,48,.3);
+  border-radius:20px;
+  padding:1.25rem 1.5rem 1.35rem;
+  margin-bottom:1.25rem;
+  animation:promoIn .6s cubic-bezier(.22,1,.36,1) both, urgencePulse 2.5s ease infinite;
+  overflow:hidden;
+}
+.promo-banner::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.04) 50%,transparent 70%);
+  background-size:200% 100%;
+  animation:shimmer 3s linear infinite;
+}
+.promo-top{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+.promo-left{display:flex;align-items:center;gap:.75rem}
+.promo-fire{font-size:1.75rem;animation:fireSpin 1.2s ease-in-out infinite;flex-shrink:0}
+.promo-text-wrap{}
+.promo-label{
+  font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:2px;
+}
+.promo-headline{
+  font-family:var(--display);font-size:1.35rem;letter-spacing:.04em;
+  color:#fff;line-height:1.1;
+}
+.promo-headline .promo-free{
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* Countdown */
+.promo-counter{
+  display:flex;align-items:center;gap:.35rem;
+  flex-shrink:0;
+}
+.cnt-unit{
+  display:flex;flex-direction:column;align-items:center;
+  background:rgba(0,0,0,.35);border:1px solid rgba(242,174,48,.25);
+  border-radius:10px;padding:6px 10px;min-width:44px;
+}
+.cnt-num{
+  font-family:var(--mono);font-size:1.3rem;font-weight:700;
+  color:var(--accent);line-height:1;
+  transition:all .15s;
+}
+.cnt-num.flip{animation:countFlip .35s ease}
+.cnt-lbl{font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-top:3px}
+.cnt-sep{font-family:var(--mono);font-size:1.1rem;color:var(--accent);opacity:.6;margin-bottom:4px}
+
+.promo-body{margin-top:.875rem;padding-top:.875rem;border-top:1px solid rgba(242,174,48,.12)}
+.promo-body-inner{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+.promo-perks{display:flex;gap:.5rem;flex-wrap:wrap}
+.promo-perk{
+  display:flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:600;color:var(--t2);
+}
+.promo-perk-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
+.promo-urgency{
+  font-size:11px;font-weight:700;color:rgba(255,150,80,.9);
+  white-space:nowrap;
+}
+.promo-urgency span{
+  background:rgba(255,122,64,.15);border:1px solid rgba(255,122,64,.3);
+  border-radius:99px;padding:3px 10px;
+}
+
+@media(max-width:480px){
+  .promo-headline{font-size:1.1rem}
+  .cnt-unit{min-width:38px;padding:5px 7px}
+  .cnt-num{font-size:1.1rem}
+}
+
+/* ═══════════════════════════════════
+   MÓDULO 2 — ARCA CONSTANCIA
+═══════════════════════════════════ */
+/* Link card */
+.arca-link-btn{
+  display:flex;align-items:center;gap:14px;
+  background:linear-gradient(135deg,rgba(91,155,248,.12),rgba(91,155,248,.05));
+  border:1px solid rgba(91,155,248,.3);
+  border-radius:16px;padding:1.1rem 1.4rem;
+  text-decoration:none;color:inherit;
+  transition:all .2s;cursor:pointer;
+  margin-bottom:.75rem;
+  position:relative;overflow:hidden;
+}
+.arca-link-btn::before{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(91,155,248,.08),transparent);
+  transition:left .5s;
+}
+.arca-link-btn:hover::before{left:100%}
+.arca-link-btn:hover{border-color:rgba(91,155,248,.5);transform:translateY(-2px);box-shadow:0 10px 30px rgba(91,155,248,.15)}
+.arca-link-icon{width:42px;height:42px;border-radius:12px;background:rgba(91,155,248,.15);border:1px solid rgba(91,155,248,.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.arca-link-text{}
+.arca-link-label{font-size:11px;color:var(--blue);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
+.arca-link-url{font-family:var(--mono);font-size:12px;color:var(--t2)}
+.arca-link-arrow{margin-left:auto;font-size:18px;color:var(--blue);transition:transform .2s}
+.arca-link-btn:hover .arca-link-arrow{transform:translateX(4px)}
+
+/* Constancia document mockup */
+.constancia-doc{
+  background:#fff;border-radius:16px;
+  padding:0;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+  margin-bottom:1rem;
+  border:1px solid rgba(255,255,255,.06);
+}
+.constancia-header{
+  background:linear-gradient(135deg,#2563EB,#1D4ED8);
+  padding:1rem 1.4rem;
+  display:flex;align-items:center;gap:12px;
+}
+.constancia-header-logo{
+  width:36px;height:36px;background:#fff;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;
+}
+.constancia-header-text{}
+.constancia-header-title{color:#fff;font-size:13px;font-weight:700;font-family:var(--sans)}
+.constancia-header-sub{color:rgba(255,255,255,.65);font-size:10px;letter-spacing:.05em}
+.constancia-body{padding:1.2rem 1.4rem}
+.constancia-title-doc{
+  font-size:14px;font-weight:800;color:#111827;text-align:center;
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:.875rem;
+  padding-bottom:.75rem;border-bottom:2px solid #E5E7EB;
+}
+.constancia-row{
+  display:flex;gap:.5rem;margin-bottom:.6rem;
+  padding:.55rem .75rem;
+  border-radius:8px;
+  background:#F8FAFC;
+  border:1px solid #E5E7EB;
+  position:relative;
+}
+.constancia-row.highlight{
+  background:#FFF8EC;border-color:#FCD34D;
+}
+.constancia-row.highlight-green{
+  background:#F0FDF4;border-color:#BBF7D0;
+}
+.constancia-row.highlight-red{
+  background:#FFF1F2;border-color:#FECDD3;
+}
+.constancia-field-label{
+  font-size:10px;font-weight:700;color:#6B7280;letter-spacing:.06em;text-transform:uppercase;
+  min-width:110px;flex-shrink:0;padding-top:1px;font-family:var(--sans);
+}
+.constancia-field-value{font-size:12px;font-weight:600;color:#111827;font-family:var(--sans);line-height:1.4}
+.constancia-badge{
+  position:absolute;right:.6rem;top:50%;transform:translateY(-50%);
+  font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  padding:2px 8px;border-radius:99px;
+}
+.badge-ok{background:#D1FAE5;color:#065F46}
+.badge-warn{background:#FEE2E2;color:#991B1B}
+.badge-info{background:#DBEAFE;color:#1E40AF}
+.constancia-qr-row{
+  display:flex;align-items:center;gap:12px;
+  padding:.75rem;background:#F8FAFC;border-radius:10px;
+  border:1px solid #E5E7EB;margin-top:.5rem;
+}
+.constancia-qr{
+  width:54px;height:54px;border-radius:8px;
+  background:repeating-conic-gradient(#111 0% 25%,#fff 0% 50%) 0 0/8px 8px;
+  flex-shrink:0;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+.constancia-qr-text{font-size:11px;color:#6B7280;line-height:1.55}
+.constancia-qr-text strong{color:#111827;display:block;font-size:12px;margin-bottom:2px}
+
+/* Field callout annotations */
+.field-callout{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:.65rem .875rem;border-radius:10px;
+  margin-bottom:.5rem;
+  background:rgba(255,255,255,.025);border:1px solid var(--border);
+}
+.field-callout-num{
+  width:20px;height:20px;border-radius:6px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#000;font-size:10px;font-weight:800;font-family:var(--mono);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+}
+.field-callout-body{}
+.field-callout-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px}
+.field-callout-desc{font-size:11px;color:var(--t2);line-height:1.55}
+.field-callout-example{
+  font-family:var(--mono);font-size:10px;color:var(--accent);
+  background:rgba(242,174,48,.07);border:1px solid rgba(242,174,48,.15);
+  border-radius:5px;padding:2px 7px;margin-top:4px;display:inline-block;
+}
+
+/* URL step */
+.url-step{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:1rem;border-radius:12px;
+  background:rgba(255,255,255,.025);border:1px solid var(--border);
+  margin-bottom:.625rem;
+}
+.url-step-num{
+  width:28px;height:28px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue),#3B6FD4);
+  color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.url-step-body{flex:1}
+.url-step-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:3px}
+.url-step-desc{font-size:12px;color:var(--t2);line-height:1.6}
+.url-step-code{
+  font-family:var(--mono);font-size:10px;
+  background:rgba(91,155,248,.08);border:1px solid rgba(91,155,248,.2);
+  color:var(--blue);border-radius:6px;padding:4px 10px;margin-top:5px;display:inline-block;
+  word-break:break-all;
+}
+.url-step-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(15,217,138,.1);border:1px solid rgba(15,217,138,.2);
+  color:var(--green);font-size:10px;font-weight:700;font-family:var(--mono);
+  border-radius:6px;padding:2px 8px;margin-top:4px;
+}
+
+/* ARCA public search box */
+.arca-public-box{
+  background:linear-gradient(135deg,rgba(15,217,138,.07),rgba(15,217,138,.03));
+  border:1px solid rgba(15,217,138,.22);
+  border-radius:14px;padding:1.1rem 1.4rem;
+  display:flex;gap:14px;align-items:flex-start;
+  margin-bottom:1rem;
+}
+.arca-public-icon{font-size:24px;flex-shrink:0}
+.arca-public-body{}
+.arca-public-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:.3rem}
+.arca-public-desc{font-size:13px;color:rgba(150,255,210,.8);line-height:1.6}
+.arca-public-link{
+  display:inline-flex;align-items:center;gap:5px;
+  color:var(--green);font-size:12px;font-weight:700;font-family:var(--mono);
+  text-decoration:none;margin-top:.4rem;
+  border-bottom:1px dashed rgba(15,217,138,.4);
+  transition:border-color .15s;
+}
+.arca-public-link:hover{border-color:var(--green)}
+
+/* States pills */
+.state-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
+.state-pill{
+  font-size:11px;font-weight:700;padding:4px 12px;border-radius:99px;font-family:var(--mono);
+}
+.sp-active{background:#D1FAE5;color:#065F46}
+.sp-inactive{background:#FEE2E2;color:#991B1B}
+.sp-low{background:#FEF3C7;color:#92400E}
+.sp-nr{background:#E5E7EB;color:#374151}
+
+@media print{body *{visibility:hidden}#cert-printable,#cert-printable *{visibility:visible}#cert-printable{position:fixed;inset:0}}
+@media(max-width:600px){
+  .app-header{padding:.75rem 1rem}
+  .content-area,.quiz-area,.ov-body{padding:1.5rem 1rem 6rem}
+  .login-card{padding:2rem 1.5rem}
+}
+</style>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-wrap" id="ticker-wrap">
+  <div class="ticker-inner">
+    <span class="ticker-item">🛡️ Compra Segura Auto <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Verificá el CUIT en ARCA antes de firmar <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Exigí el Formulario 08 en la fecha de entrega <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Sin factura no hay garantía legal <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Guardá toda comunicación por escrito <span class="ticker-dot"></span></span>
+    <span class="ticker-item">🛡️ Compra Segura Auto <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Verificá el CUIT en ARCA antes de firmar <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Exigí el Formulario 08 en la fecha de entrega <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Sin factura no hay garantía legal <span class="ticker-dot"></span></span>
+    <span class="ticker-item">Guardá toda comunicación por escrito <span class="ticker-dot"></span></span>
+  </div>
+</div>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="screen-login" class="screen active">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="login-wrap">
+    <div class="login-card">
+      <span class="login-car">🚗</span>
+      <!-- PROMO BANNER -->
+      <div class="promo-banner" id="promo-banner">
+        <div class="promo-top">
+          <div class="promo-left">
+            <span class="promo-fire">🔥</span>
+            <div class="promo-text-wrap">
+              <div class="promo-label">Oferta por tiempo limitado</div>
+              <div class="promo-headline">Curso &amp; Certificado<br><span class="promo-free">100% GRATIS</span></div>
+            </div>
+          </div>
+          <div class="promo-counter" id="promo-counter">
+            <div class="cnt-unit"><div class="cnt-num" id="cnt-d">00</div><div class="cnt-lbl">Días</div></div>
+            <div class="cnt-sep">:</div>
+            <div class="cnt-unit"><div class="cnt-num" id="cnt-h">00</div><div class="cnt-lbl">Hrs</div></div>
+            <div class="cnt-sep">:</div>
+            <div class="cnt-unit"><div class="cnt-num" id="cnt-m">00</div><div class="cnt-lbl">Min</div></div>
+            <div class="cnt-sep">:</div>
+            <div class="cnt-unit"><div class="cnt-num" id="cnt-s">00</div><div class="cnt-lbl">Seg</div></div>
+          </div>
+        </div>
+        <div class="promo-body">
+          <div class="promo-body-inner">
+            <div class="promo-perks">
+              <div class="promo-perk"><div class="promo-perk-dot"></div>5 módulos completos</div>
+              <div class="promo-perk"><div class="promo-perk-dot"></div>Quiz final incluido</div>
+              <div class="promo-perk"><div class="promo-perk-dot"></div>Certificado oficial</div>
+            </div>
+            <div class="promo-urgency"><span>⚡ La oferta vence pronto</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="login-badge"><span class="badge-dot"></span> Capacitación Oficial</div>
+      <h1 class="login-title">COMPRÁ<br>TU AUTO<br><span class="hl">SEGURO</span></h1>
+      <p class="login-sub">Todo lo que necesitás saber sobre verificación de agencias, documentación y derechos legales en tu compra con financiación.</p>
+      <div class="feat-row">
+        <div class="feat">📋 6 Módulos</div>
+        <div class="feat">🎯 Quiz Final</div>
+        <div class="feat">🏆 Certificado</div>
+        <div class="feat">⏱ ~25 min</div>
+      </div>
+      <div class="fld">
+        <label class="fld-lbl" for="fn">Nombre</label>
+        <input class="fld-inp" type="text" id="fn" placeholder="Tu nombre" autocomplete="given-name">
+        <div class="err-msg" id="err-fn">Ingresá tu nombre</div>
+      </div>
+      <div class="fld">
+        <label class="fld-lbl" for="ln">Apellido</label>
+        <input class="fld-inp" type="text" id="ln" placeholder="Tu apellido" autocomplete="family-name">
+        <div class="err-msg" id="err-ln">Ingresá tu apellido</div>
+      </div>
+      <div class="fld">
+        <label class="fld-lbl" for="dni">N° de Documento (DNI)</label>
+        <input class="fld-inp" type="text" id="dni" placeholder="Ej: 35.123.456" autocomplete="off" inputmode="numeric" maxlength="10">
+        <div class="err-msg" id="err-dni">Ingresá un DNI válido (7 u 8 dígitos)</div>
+      </div>
+      <div class="fld">
+        <label class="fld-lbl" for="email">Correo Electrónico</label>
+        <input class="fld-inp" type="email" id="email" placeholder="tu@email.com" autocomplete="email">
+        <div class="err-msg" id="err-email">Ingresá un correo válido</div>
+      </div>
+      <p class="fld-cert-note">📋 <strong>Estos datos figurarán en tu certificado oficial.</strong> Asegurate de que sean correctos.</p>
+      <button class="btn-cta" onclick="startTraining()">Comenzar capacitación →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ OVERVIEW ═══ -->
+<div id="screen-overview" class="screen">
+  <header class="app-header">
+    <div><div class="header-logo">COMPRA SEGURA</div><span class="header-logo-sub">Auto · Financiación</span></div>
+    <div class="stepper" id="ov-stepper"></div>
+    <div class="user-chip"><div class="user-av" id="ov-av"></div><div class="user-nm" id="ov-nm"></div></div>
+  </header>
+  <div class="ov-hero">
+    <div class="ov-hello">HOLA, <span id="ov-name"></span> 👋</div>
+    <p class="ov-sub">Tu capacitación tiene 6 módulos + quiz final. Completá cada sección para obtener tu certificado de Compra Segura.</p>
+    <div class="ov-stats-row">
+      <div class="ov-stat"><div class="ov-stat-n">6</div><div class="ov-stat-l">Módulos</div></div>
+      <div class="ov-stat"><div class="ov-stat-n">~25</div><div class="ov-stat-l">Minutos</div></div>
+      <div class="ov-stat"><div class="ov-stat-n">1</div><div class="ov-stat-l">Certificado</div></div>
+    </div>
+  </div>
+  <div class="ov-body">
+    <div class="section-label">Módulos del curso</div>
+    <div class="mod-grid" id="ov-grid"></div>
+    <div style="text-align:center">
+      <button class="start-btn" onclick="goToModule(0)">
+        Empezar Módulo 1
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MÓDULO ═══ -->
+<div id="screen-module" class="screen" style="flex-direction:column">
+  <header class="app-header">
+    <div><div class="header-logo">COMPRA SEGURA</div></div>
+    <div class="stepper" id="mod-stepper"></div>
+    <div class="user-chip"><div class="user-av" id="mod-av"></div><div class="user-nm" id="mod-nm"></div></div>
+  </header>
+  <div class="content-area" id="mod-content"></div>
+</div>
+
+<!-- ═══ QUIZ ═══ -->
+<div id="screen-quiz" class="screen" style="flex-direction:column">
+  <header class="app-header">
+    <div><div class="header-logo">QUIZ FINAL</div></div>
+    <div class="stepper" id="qz-stepper"></div>
+    <div class="user-chip"><div class="user-av" id="qz-av"></div><div class="user-nm" id="qz-nm"></div></div>
+  </header>
+  <div class="quiz-area" id="qz-content"></div>
+</div>
+
+<!-- ═══ CERTIFICADO ═══ -->
+<div id="screen-cert" class="screen">
+  <div class="confetti-container" id="confetti-container"></div>
+  <div class="cert-wrap">
+    <div class="cert-paper" id="cert-printable">
+      <div class="cert-inner-border"></div>
+      <span class="cert-seal">🏆</span>
+      <p class="cert-pre">Certificado de finalización</p>
+      <h2 class="cert-headline">Compra Segura de Auto</h2>
+      <div class="cert-rule"></div>
+      <p class="cert-body-text">Este certificado acredita que</p>
+      <div class="cert-name-big" id="cert-name">—</div>
+      <p class="cert-sub-text">ha completado exitosamente la capacitación</p>
+      <p class="cert-sub-text" style="font-size:11px;color:#9CA3AF;margin-top:4px">DNI: <span id="cert-dni" style="font-weight:700;color:#374151">—</span></p>
+      <div class="cert-course-box">
+        <div class="cert-course-name">🚗 Cómo comprar un auto de forma segura con financiación</div>
+        <div class="cert-course-desc">Verificación de agencias · Documentación · Derechos del consumidor</div>
+      </div>
+      <div class="cert-badges-row">
+        <div class="cert-badge">✅ Módulos completados</div>
+        <div class="cert-badge">🎯 Quiz aprobado</div>
+        <div class="cert-badge">📄 Documentación verificada</div>
+      </div>
+      <div class="cert-meta">
+        <div class="cert-meta-item">
+          <div class="cert-meta-lbl">Fecha</div>
+          <div class="cert-meta-val" id="cert-date">—</div>
+        </div>
+        <div class="cert-meta-item">
+          <div class="cert-meta-lbl">Puntaje</div>
+          <div class="cert-meta-val" id="cert-score">—</div>
+        </div>
+        <div class="cert-meta-item">
+          <div class="cert-meta-lbl">Duración</div>
+          <div class="cert-meta-val">~20 min</div>
+        </div>
+        <div class="cert-meta-item">
+          <div class="cert-meta-lbl">N° Certificado</div>
+          <div class="cert-meta-val" id="cert-id" style="font-size:10px;letter-spacing:.06em">—</div>
+        </div>
+      </div>
+      <div class="cert-footer">
+        <div class="cert-line"></div>
+        <div class="cert-signer">Equipo de Capacitación</div>
+        <div class="cert-signer-role">Compra Segura · Educación al Consumidor</div>
+      </div>
+    </div>
+    <div style="text-align:center;display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap">
+      <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+      <button class="btn-print" style="background:rgba(255,255,255,.08);color:#fff;box-shadow:none;border:1px solid rgba(255,255,255,.12)" onclick="reiniciar()">↩ Nueva capacitación</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// SUPABASE CONFIGURATION
+// ══════════════════════════════════════════
+const SUPABASE_URL = 'https://qsrwmlhqdqtpmowmzbps.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_kbEt600wIh3EUK4SEL6EZQ_mlq8hGAH';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let userName='',userLastName='',userDni='',userEmail='',quizScore=0,completedModules=[],currentModule=0,sessionId=null;
+
+// ══════════════════════════════════════════
+// SUPABASE OPERATIONS
+// ══════════════════════════════════════════
+async function dbStartSession(nombre, apellido, dni, email) {
+  try {
+    // 1. Insert/Update User
+    const { data: user, error: userError } = await sb
+      .from('usuarios')
+      .upsert({ nombre, apellido, dni, email }, { onConflict: 'email' })
+      .select()
+      .single();
+    
+    if (userError) throw userError;
+
+    // 2. Create Session
+    const { data: session, error: sessionError } = await sb
+      .from('sesiones')
+      .insert({ usuario_id: user.id, estado: 'en_curso' })
+      .select()
+      .single();
+
+    if (sessionError) throw sessionError;
+    return session.id;
+  } catch (e) {
+    console.error('Error starting session:', e);
+    return null;
+  }
+}
+
+async function dbCompleteModule(sId, mId) {
+  if (!sId) return;
+  try {
+    await sb.from('progreso_modulos').upsert({ sesion_id: sId, modulo_id: mId + 1 });
+  } catch (e) { console.error('Error saving module progress:', e); }
+}
+
+async function dbSaveAnswer(sId, qId, optIdx, isCorrect) {
+  if (!sId) return;
+  try {
+    await sb.from('respuestas_quiz').upsert({ 
+      sesion_id: sId, 
+      pregunta_id: qId + 1, 
+      opcion_elegida: optIdx, 
+      es_correcta: isCorrect 
+    });
+  } catch (e) { console.error('Error saving quiz answer:', e); }
+}
+
+async function dbEmitCert(sId, code, score, total) {
+  if (!sId) return;
+  try {
+    const pct = (score / total) * 100;
+    await sb.from('certificados').insert({
+      sesion_id: sId,
+      codigo: code,
+      puntaje: score,
+      puntaje_total: total,
+      porcentaje: pct
+    });
+    await sb.from('sesiones').update({ estado: 'certificado_emitido', fecha_fin: new Date().toISOString() }).eq('id', sId);
+  } catch (e) { console.error('Error emitting certificate:', e); }
+}
+
+// ══════════════════════════════════════════
+// MODULES DATA
+// ══════════════════════════════════════════
+const MODULES=[
+  {
+    icon:'🔍',
+    title:'Cómo verificar si la agencia existe',
+    intro:'Antes de señar o transferir cualquier dinero, chequeá que la agencia sea real y habilitada.',
+    render:()=>`
+      <div class="m-eyebrow">📋 Módulo 1 de 6</div>
+      <h1 class="m-title">Verificar la agencia</h1>
+      <p class="m-intro">Antes de señar o transferir dinero, verificá que la agencia sea legítima y esté inscripta en ARCA (ex AFIP).</p>
+      <div class="card">
+        <div class="card-accent ca-blue"></div>
+        <div class="c-icon ci-blue">🏢</div>
+        <h3 class="c-title">Datos que debe darte la agencia</h3>
+        <ul class="cl">
+          <li><div class="ck ck-ok">✓</div> CUIT de la empresa o del titular</li>
+          <li><div class="ck ck-ok">✓</div> Razón social completa</li>
+          <li><div class="ck ck-ok">✓</div> Domicilio comercial verificable</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-accent ca-green"></div>
+        <div class="c-icon ci-green">✅</div>
+        <h3 class="c-title">Cómo validar en 3 pasos</h3>
+        <div class="steps">
+          <div class="step"><div class="step-lhs"><div class="snum">1</div><div class="sline"></div></div><div class="sbody"><h4>Pedí la constancia de inscripción</h4><p>Cualquier empresa legítima puede descargarla en ARCA con su Clave Fiscal. Si se niegan, es una alerta roja.</p></div></div>
+          <div class="step"><div class="step-lhs"><div class="snum">2</div><div class="sline"></div></div><div class="sbody"><h4>Verificá el CUIT en ARCA</h4><p>Ingresá el número en arca.gob.ar y chequeá que coincida la razón social, domicilio y que el estado esté "Activo".</p></div></div>
+          <div class="step"><div class="step-lhs"><div class="snum">3</div><div class="sline"></div></div><div class="sbody"><h4>Cruzá la información</h4><p>El CUIT en el contrato, la factura y la constancia deben ser idénticos. Cualquier diferencia es motivo de suspender la compra.</p></div></div>
+        </div>
+      </div>
+      <div class="alert-box">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-text"><strong>Señales de alerta — Detené todo si ves esto</strong>No entregan factura · No muestran CUIT · Todo es "de palabra" · Presionan para cerrar sin documentación</div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn-back" onclick="goToOverview()">← Volver</button>
+        <button class="btn-next" onclick="completeModule(0)">Entendido, siguiente →</button>
+      </div>`
+  },
+  {
+    icon:'📄',
+    title:'Cómo descargar la constancia de ARCA',
+    intro:'Link directo, ejemplos reales y todos los campos explicados para verificar si la agencia existe.',
+    render:()=>`
+      <div class="m-eyebrow">📋 Módulo 2 de 6</div>
+      <h1 class="m-title">Constancia de ARCA</h1>
+      <p class="m-intro">La constancia de inscripción es el documento oficial del Estado que prueba que la agencia existe y está registrada. Si la agencia no puede mostrártela, es una alerta roja inmediata.</p>
+
+      <!-- LINK DIRECTO -->
+      <div class="card" style="margin-bottom:1rem">
+        <div class="card-accent ca-blue"></div>
+        <div class="c-icon ci-blue">🔗</div>
+        <h3 class="c-title">Acceso directo — Link oficial para verificar</h3>
+        <p style="margin-bottom:1rem">Usá estos dos accesos oficiales del organismo. El primero no requiere clave fiscal.</p>
+
+        <a class="arca-link-btn" href="https://seti.afip.gob.ar/padron-puc-constancia-internet/ConsultaConstanciaAction.do" target="_blank" rel="noopener">
+          <div class="arca-link-icon">🌐</div>
+          <div class="arca-link-text">
+            <div class="arca-link-label">✅ Sin clave fiscal — Solo ingresás el CUIT</div>
+            <div class="arca-link-url">seti.afip.gob.ar › padron-puc-constancia-internet</div>
+          </div>
+          <div class="arca-link-arrow">→</div>
+        </a>
+
+        <a class="arca-link-btn" href="https://serviciosweb.afip.gob.ar/genericos/constanciaInscripcion/acercaDe.aspx" target="_blank" rel="noopener">
+          <div class="arca-link-icon">🔐</div>
+          <div class="arca-link-text">
+            <div class="arca-link-label">Con Clave Fiscal — Descarga en PDF</div>
+            <div class="arca-link-url">serviciosweb.afip.gob.ar › constanciaInscripcion</div>
+          </div>
+          <div class="arca-link-arrow">→</div>
+        </a>
+
+        <div class="success-box" style="margin-top:.75rem;margin-bottom:0">
+          <div class="alert-icon">💡</div>
+          <div class="success-text"><strong>Tip:</strong> El primer link es público. Solo ingresás el CUIT de la agencia y en segundos ves si está activa. No necesitás tu propia clave fiscal.</div>
+        </div>
+      </div>
+
+      <!-- PASOS -->
+      <div class="card">
+        <div class="card-accent ca-blue"></div>
+        <div class="c-icon ci-blue">🖥️</div>
+        <h3 class="c-title">Paso a paso: cómo acceder al link público</h3>
+        <div style="display:flex;flex-direction:column;gap:.5rem">
+          <div class="url-step">
+            <div class="url-step-num">1</div>
+            <div class="url-step-body">
+              <div class="url-step-title">Abrí el link oficial de ARCA</div>
+              <div class="url-step-desc">Copiá y pegá la URL en tu navegador o hacé clic en el botón azul de arriba.</div>
+              <div class="url-step-code">seti.afip.gob.ar/padron-puc-constancia-internet/ConsultaConstanciaAction.do</div>
+            </div>
+          </div>
+          <div class="url-step">
+            <div class="url-step-num">2</div>
+            <div class="url-step-body">
+              <div class="url-step-title">Ingresá el CUIT de la agencia</div>
+              <div class="url-step-desc">Pedile el CUIT a la agencia antes de visitar. Tiene el formato XX-XXXXXXXX-X. Ingresalo sin guiones en el campo de búsqueda.</div>
+              <div class="url-step-code">Ejemplo: 30-71234567-9 → escribí 30712345679</div>
+            </div>
+          </div>
+          <div class="url-step">
+            <div class="url-step-num">3</div>
+            <div class="url-step-body">
+              <div class="url-step-title">Verificá el resultado en pantalla</div>
+              <div class="url-step-desc">Aparece la ficha completa: razón social, domicilio, impuestos en los que está inscripta y el estado de la empresa.</div>
+              <div class="url-step-chip">✓ Sin registro, sin clave fiscal, gratis</div>
+            </div>
+          </div>
+          <div class="url-step">
+            <div class="url-step-num">4</div>
+            <div class="url-step-body">
+              <div class="url-step-title">Descargá el PDF (opcional con clave fiscal)</div>
+              <div class="url-step-desc">Si tenés Clave Fiscal, ingresá al segundo link y descargá el PDF oficial con código QR verificable. La agencia también puede hacerlo con su propia clave.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EJEMPLO VISUAL DE LA CONSTANCIA -->
+      <div class="card" style="padding-bottom:1.5rem">
+        <div class="card-accent ca-gold"></div>
+        <div class="c-icon ci-gold">📋</div>
+        <h3 class="c-title">Así se ve una constancia real — Ejemplo anotado</h3>
+        <p style="font-size:13px;color:var(--t2);margin-bottom:1rem">Cada campo que ves abajo tiene un significado específico. Conocelos antes de mirar la de la agencia.</p>
+
+        <div class="constancia-doc">
+          <div class="constancia-header">
+            <div class="constancia-header-logo">🇦🇷</div>
+            <div class="constancia-header-text">
+              <div class="constancia-header-title">ARCA — Agencia de Recaudación y Control Aduanero</div>
+              <div class="constancia-header-sub">Constancia de Inscripción — Emisión: Sistema Padrón Web</div>
+            </div>
+          </div>
+          <div class="constancia-body">
+            <div class="constancia-title-doc">Constancia de Inscripción en ARCA</div>
+
+            <div class="constancia-row highlight">
+              <div class="constancia-field-label">CUIT</div>
+              <div class="constancia-field-value">30-71234567-9</div>
+              <span class="constancia-badge badge-info">① Verificar</span>
+            </div>
+
+            <div class="constancia-row highlight">
+              <div class="constancia-field-label">Razón Social</div>
+              <div class="constancia-field-value">AUTOMOTORES DEL SUR S.R.L.</div>
+              <span class="constancia-badge badge-info">② Verificar</span>
+            </div>
+
+            <div class="constancia-row highlight-green">
+              <div class="constancia-field-label">Estado</div>
+              <div class="constancia-field-value" style="color:#065F46;font-weight:800">ACTIVO</div>
+              <span class="constancia-badge badge-ok">✓ OK</span>
+            </div>
+
+            <div class="constancia-row">
+              <div class="constancia-field-label">Tipo de Persona</div>
+              <div class="constancia-field-value">Persona Jurídica — S.R.L.</div>
+            </div>
+
+            <div class="constancia-row highlight">
+              <div class="constancia-field-label">Domicilio Fiscal</div>
+              <div class="constancia-field-value">Av. Corrientes 1234, Piso 3, CABA</div>
+              <span class="constancia-badge badge-info">③ Verificar</span>
+            </div>
+
+            <div class="constancia-row">
+              <div class="constancia-field-label">Fecha de Inicio</div>
+              <div class="constancia-field-value">15/03/2012</div>
+            </div>
+
+            <div class="constancia-row">
+              <div class="constancia-field-label">Impuestos</div>
+              <div class="constancia-field-value">IVA · Ganancias · Ingresos Brutos · Monotributo excluido</div>
+            </div>
+
+            <div class="constancia-row">
+              <div class="constancia-field-label">Actividad AFIP</div>
+              <div class="constancia-field-value">451000 — Venta de vehículos automotores</div>
+            </div>
+
+            <div class="constancia-row">
+              <div class="constancia-field-label">Fecha de Emisión</div>
+              <div class="constancia-field-value">19/05/2025 — 14:32 hs</div>
+            </div>
+
+            <div class="constancia-qr-row">
+              <div class="constancia-qr"></div>
+              <div class="constancia-qr-text">
+                <strong>Código QR de verificación</strong>
+                Escanealo con tu celular para confirmar que el documento es auténtico y fue emitido por ARCA. Cualquier constancia adulterada no tiene QR válido.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPLICACIÓN DE CADA CAMPO -->
+      <div class="card">
+        <div class="card-accent ca-green"></div>
+        <div class="c-icon ci-green">🔎</div>
+        <h3 class="c-title">Qué significa cada campo — Guía completa</h3>
+
+        <div class="field-callout">
+          <div class="field-callout-num">①</div>
+          <div class="field-callout-body">
+            <div class="field-callout-title">CUIT — Código Único de Identificación Tributaria</div>
+            <div class="field-callout-desc">Formato XX-XXXXXXXX-X. Para empresas empieza siempre con <strong>30, 33 o 34</strong>. Si empieza con 20, 23, 24 o 27 es una persona física (dueño), no la empresa. Verificá que coincida exactamente con el que figura en el contrato y la factura.</div>
+            <div class="field-callout-example">Ejemplo válido: 30-71234567-9 · Inválido para empresa: 20-35123456-7</div>
+          </div>
+        </div>
+
+        <div class="field-callout">
+          <div class="field-callout-num">②</div>
+          <div class="field-callout-body">
+            <div class="field-callout-title">Razón Social — Nombre legal de la empresa</div>
+            <div class="field-callout-desc">Debe coincidir con el nombre en el contrato, la factura y el cartel del local. Las diferencias de mayúsculas no importan, pero "Automotores del Sur" vs "Del Sur Autos" es un problema. También fijate el tipo societario: S.R.L., S.A., o Unipersonal son normales. Una empresa sin tipo societario es sospechosa.</div>
+            <div class="field-callout-example">OK: AUTOMOTORES DEL SUR S.R.L. · Alerta: "Juan Pérez" como vendedor de autos</div>
+          </div>
+        </div>
+
+        <div class="field-callout">
+          <div class="field-callout-num">③</div>
+          <div class="field-callout-body">
+            <div class="field-callout-title">Estado — Situación fiscal actual</div>
+            <div class="field-callout-desc">Es el campo más importante. Solo hay un estado aceptable: <strong>ACTIVO</strong>. Los demás estados significan que la empresa no está operando regularmente ante el fisco.</div>
+            <div style="margin-top:.5rem">
+              <div class="state-pills">
+                <span class="state-pill sp-active">ACTIVO ✓</span>
+                <span class="state-pill sp-inactive">INACTIVO ✗</span>
+                <span class="state-pill sp-low">BAJA ✗</span>
+                <span class="state-pill sp-nr">NO INSCRIPTO ✗</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-callout">
+          <div class="field-callout-num">④</div>
+          <div class="field-callout-body">
+            <div class="field-callout-title">Domicilio Fiscal — Dirección registrada ante ARCA</div>
+            <div class="field-callout-desc">Compará con la dirección del local donde estás comprando. No tienen que ser idénticas (pueden tener otro depósito o sucursal), pero si el domicilio fiscal es en una provincia completamente diferente o en un domicilio inexistente en Google Maps, investigá más antes de avanzar.</div>
+          </div>
+        </div>
+
+        <div class="field-callout">
+          <div class="field-callout-num">⑤</div>
+          <div class="field-callout-body">
+            <div class="field-callout-title">Actividad AFIP — Código de actividad económica</div>
+            <div class="field-callout-desc">Debe incluir algún código relacionado con venta de vehículos. El código <strong>451000</strong> es "Venta de vehículos automotores". Si la agencia dice ser una concesionaria pero su actividad registrada es "Servicios de gastronomía" o "Construcción", es una señal de alerta.</div>
+            <div class="field-callout-example">Códigos normales: 451000 · 452000 · 503000 (partes y accesorios)</div>
+          </div>
+        </div>
+
+        <div class="field-callout">
+          <div class="field-callout-num">⑥</div>
+          <div class="field-callout-body">
+            <div class="field-callout-title">Fecha de Inicio y Emisión</div>
+            <div class="field-callout-desc">Una empresa con menos de 6 meses de antigüedad vendiendo autos a crédito merece más cuidado. La fecha de emisión de la constancia debe ser reciente (idealmente del mismo día o semana en que la pedís): una constancia de hace 2 años puede estar desactualizada.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ESTADOS POSIBLES Y QUÉ HACER -->
+      <div class="two-col">
+        <div class="mini">
+          <div class="mini-title">✅ Constancia correcta</div>
+          <ul class="cl" style="font-size:12px">
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> CUIT empieza con 30/33/34</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Estado: <strong>ACTIVO</strong></li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Razón social coincide con contrato</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Actividad: venta automotores</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Emitida en fecha reciente</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> QR escaneable y válido</li>
+          </ul>
+        </div>
+        <div class="mini">
+          <div class="mini-title">🚨 Señales de alerta — Detené la compra</div>
+          <ul class="cl" style="font-size:12px">
+            <li><div class="ck ck-warn" style="font-size:10px">✗</div> Estado INACTIVO o BAJA</li>
+            <li><div class="ck ck-warn" style="font-size:10px">✗</div> CUIT de persona física (20/23/27)</li>
+            <li><div class="ck ck-warn" style="font-size:10px">✗</div> Nombre no coincide</li>
+            <li><div class="ck ck-warn" style="font-size:10px">✗</div> Actividad sin relación con autos</li>
+            <li><div class="ck ck-warn" style="font-size:10px">✗</div> Se niegan a mostrártela</li>
+            <li><div class="ck ck-warn" style="font-size:10px">✗</div> QR no funciona o no existe</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- TIP BÚSQUEDA PÚBLICA -->
+      <div class="arca-public-box">
+        <div class="arca-public-icon">🔍</div>
+        <div class="arca-public-body">
+          <div class="arca-public-title">Consulta pública sin registro — Verificá en 30 segundos</div>
+          <div class="arca-public-desc">No necesitás cuenta ni clave fiscal. Ingresá el CUIT de la agencia en el buscador público y en segundos ves si está activa, qué impuestos tiene y cuál es su actividad.</div>
+          <a class="arca-public-link" href="https://seti.afip.gob.ar/padron-puc-constancia-internet/ConsultaConstanciaAction.do" target="_blank" rel="noopener">seti.afip.gob.ar → Consulta pública ↗</a>
+        </div>
+      </div>
+
+      <div class="nav-bar">
+        <button class="btn-back" onclick="goToModule(0)">← Anterior</button>
+        <button class="btn-next" onclick="completeModule(1)">Entendido, siguiente →</button>
+      </div>`
+  },
+  {
+    icon:'🚗',
+    title:'Checklist para cuando recibís el auto',
+    intro:'Revisión mecánica y documental al momento de la entrega pactada por contrato.',
+    render:()=>`
+      <div class="m-eyebrow">📋 Módulo 3 de 6</div>
+      <h1 class="m-title">Al recibir el auto</h1>
+      <p class="m-intro">La revisión mecánica y documental se hace al momento de la entrega pactada por contrato. No firmes la recepción hasta que todo esté en orden.</p>
+      <div class="card">
+        <div class="card-accent ca-blue"></div>
+        <div class="c-icon ci-blue">🔧</div>
+        <h3 class="c-title">Revisión mecánica</h3>
+        <ul class="cl">
+          <li><div class="ck ck-ok">✓</div> Motor sin pérdidas de aceite ni refrigerante</li>
+          <li><div class="ck ck-ok">✓</div> Frenos funcionando correctamente</li>
+          <li><div class="ck ck-ok">✓</div> Cubiertas en buen estado (tread &gt; 3mm)</li>
+          <li><div class="ck ck-ok">✓</div> Luces completas (día, posición, stop, giro)</li>
+          <li><div class="ck ck-ok">✓</div> Aire acondicionado y calefacción</li>
+          <li><div class="ck ck-ok">✓</div> Kilometraje coherente con el año del vehículo</li>
+        </ul>
+      </div>
+      <div class="two-col">
+        <div class="mini">
+          <div class="mini-title">📋 Revisión legal</div>
+          <ul class="cl" style="font-size:13px">
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Título del automotor</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Cédula verde o azul</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Verificación policial</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Libre deuda de multas</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Patentes al día</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Radicación correcta</li>
+          </ul>
+        </div>
+        <div class="mini">
+          <div class="mini-title">📂 Documentos clave</div>
+          <ul class="cl" style="font-size:13px">
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Formulario 08 firmado</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Informe de dominio (RNPA)</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Grabado de autopartes</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> VTV vigente</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Factura o boleto de compra</li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert-box">
+        <div class="alert-icon">🔴</div>
+        <div class="alert-text"><strong>¡Nunca firmes la recepción sin VTV vigente e informe de dominio!</strong>El informe de dominio te dice si el auto tiene prendas, embargos, inhibiciones o está robado. Pedilo al Registro del Automotor.</div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn-back" onclick="goToModule(1)">← Anterior</button>
+        <button class="btn-next" onclick="completeModule(2)">Entendido, siguiente →</button>
+      </div>`
+  },
+  {
+    icon:'📝',
+    title:'El Formulario 08 y la documentación de entrega',
+    intro:'Lo que debe estar listo en la fecha de entrega pactada por contrato.',
+    render:()=>`
+      <div class="m-eyebrow">📋 Módulo 4 de 6</div>
+      <h1 class="m-title">Formulario 08</h1>
+      <p class="m-intro">La agencia debe tener toda la documentación lista para la fecha de entrega pactada. Sin el Formulario 08 no podés registrar el vehículo a tu nombre.</p>
+      <div class="card glow-gold">
+        <div class="card-accent ca-gold"></div>
+        <div class="c-icon ci-gold">📝</div>
+        <h3 class="c-title">¿Qué es el Formulario 08?</h3>
+        <p>Es el formulario oficial del Registro Nacional de la Propiedad Automotor que habilita la transferencia de titularidad. La agencia debe gestionarlo y tenerlo listo para la fecha acordada. Debe estar completado y firmado por el titular actual ante escribano o el registro.</p>
+      </div>
+      <div class="card glow-green">
+        <div class="card-accent ca-green"></div>
+        <div class="c-icon ci-green">✅</div>
+        <h3 class="c-title">En la fecha pactada, la agencia DEBE entregarte:</h3>
+        <ul class="cl">
+          <li><div class="ck ck-ok">✓</div> Autorización de venta firmada por el titular</li>
+          <li><div class="ck ck-ok">✓</div> Formulario 08 correctamente completado</li>
+          <li><div class="ck ck-ok">✓</div> Titular que coincide con la documentación</li>
+          <li><div class="ck ck-ok">✓</div> Informe de dominio actualizado (máx. 15 días)</li>
+        </ul>
+      </div>
+      <div class="success-box">
+        <div class="alert-icon">🛡️</div>
+        <div class="success-text"><strong>Regla de oro:</strong> Comprar documentado = comprar seguro. Exigí siempre todos los documentos antes de realizar cualquier pago o firma.</div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn-back" onclick="goToModule(2)">← Anterior</button>
+        <button class="btn-next" onclick="completeModule(3)">Entendido, siguiente →</button>
+      </div>`
+  },
+  {
+    icon:'⚖️',
+    title:'Tus derechos como comprador',
+    intro:'La Ley 24.240 de Defensa del Consumidor te protege en cada compra.',
+    render:()=>`
+      <div class="m-eyebrow">📋 Módulo 5 de 6</div>
+      <h1 class="m-title">Tus derechos</h1>
+      <p class="m-intro">La Ley 24.240 de Defensa del Consumidor te otorga derechos concretos. Conocerlos es tu mejor defensa.</p>
+      <div class="card">
+        <div class="card-accent ca-purple"></div>
+        <div class="c-icon ci-purple">⚖️</div>
+        <h3 class="c-title">La ley te protege — Ley 24.240</h3>
+        <ul class="cl">
+          <li><div class="ck ck-ok">✓</div> Derecho a información clara, veraz y detallada sobre el contrato de financiación</li>
+          <li><div class="ck ck-ok">✓</div> Cuota informada de antemano por escrito en el contrato (sin cargos ocultos)</li>
+          <li><div class="ck ck-ok">✓</div> Publicidad obligatoria con condiciones reales y vigentes</li>
+          <li><div class="ck ck-ok">✓</div> Factura o comprobante por todo pago realizado</li>
+        </ul>
+      </div>
+      <div class="two-col">
+        <div class="mini">
+          <div class="mini-title">🛡️ Garantías legales</div>
+          <ul class="cl" style="font-size:13px">
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> <strong>6 meses</strong> para autos nuevos</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> <strong>3 meses</strong> para usados</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> El vendedor responde</li>
+            <li><div class="ck ck-ok" style="font-size:10px">✓</div> Podés pedir reparación o devolución</li>
+          </ul>
+        </div>
+        <div class="mini">
+          <div class="mini-title">📣 Si algo falla</div>
+          <ul class="cl" style="font-size:13px">
+            <li><div class="ck ck-num">1</div> Guardá todos los mensajes y comprobantes</li>
+            <li><div class="ck ck-num">2</div> Exigí respuesta escrita siempre</li>
+            <li><div class="ck ck-num">3</div> Denunciá en COPREC o Defensa al Consumidor</li>
+            <li><div class="ck ck-num">4</div> No aceptes acuerdos solo verbales</li>
+          </ul>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn-back" onclick="goToModule(3)">← Anterior</button>
+        <button class="btn-next" onclick="completeModule(4)">Siguiente Módulo →</button>
+      </div>`
+  },
+  {
+    icon:'🛡️',
+    title:'Seguro y Patentamiento',
+    intro:'Los pasos finales para que tu auto esté 100% legal en la calle.',
+    render:()=>`
+      <div class="m-eyebrow">📋 Módulo 6 de 6</div>
+      <h1 class="m-title">Seguro y Patentamiento</h1>
+      <p class="m-intro">Una vez que tenés el auto, el proceso legal termina con el seguro obligatorio y el patentamiento correcto.</p>
+      <div class="card glow-gold">
+        <div class="card-accent ca-gold"></div>
+        <div class="c-icon ci-gold">🛡️</div>
+        <h3 class="c-title">Seguro Automotor Obligatorio</h3>
+        <p>Por ley, no podés circular sin un seguro de Responsabilidad Civil (contra terceros). La agencia puede ofrecerte uno, pero tenés derecho a elegir la compañía que prefieras.</p>
+      </div>
+      <div class="card glow-green">
+        <div class="card-accent ca-green"></div>
+        <h3 class="c-title">✅ Checklist final antes de firmar</h3>
+        <p style="font-size:13px;color:var(--t2);margin-bottom:1rem">Marcá cada ítem antes de avanzar al quiz.</p>
+        <div class="icl" id="icl">
+          <div class="icl-item" onclick="toggleCheck(this)"><div class="icl-box"></div><span>Agencia verificada en ARCA (estado ACTIVO)</span></div>
+          <div class="icl-item" onclick="toggleCheck(this)"><div class="icl-box"></div><span>Contrato de financiación firmado con cuota y condiciones por escrito</span></div>
+          <div class="icl-item" onclick="toggleCheck(this)"><div class="icl-box"></div><span>Fecha de entrega del auto pactada y asentada en el contrato</span></div>
+          <div class="icl-item" onclick="toggleCheck(this)"><div class="icl-box"></div><span>Documentación completa acordada (Formulario 08, título, informe de dominio, libre deuda)</span></div>
+          <div class="icl-item" onclick="toggleCheck(this)"><div class="icl-box"></div><span>Comprobante de cada pago / seña emitido y guardado</span></div>
+          <div class="icl-item" onclick="toggleCheck(this)"><div class="icl-box"></div><span>Toda comunicación con la agencia guardada por escrito</span></div>
+          <div class="icl-item" onclick="toggleCheck(this)"><div class="icl-box"></div><span>Conozco mis derechos como consumidor (Ley 24.240)</span></div>
+        </div>
+        <div class="cl-prog-wrap">
+          <div class="cl-bar-bg"><div class="cl-bar-fill" id="cl-fill"></div></div>
+          <div class="cl-count" id="cl-count">0 de 7 completados</div>
+        </div>
+      </div>
+      <div class="nav-bar">
+        <button class="btn-back" onclick="goToModule(4)">← Anterior</button>
+        <button class="btn-next btn-quiz-cta" onclick="completeModule(5)">Ir al Quiz Final 🎯</button>
+      </div>`
+  }
+];
+
+// ══════════════════════════════════════════
+// QUIZ DATA
+// ══════════════════════════════════════════
+const QUIZ=[
+  {
+    q:'¿Cuál es el primer paso para verificar que una agencia existe legalmente?',
+    opts:['Buscarla en internet','Pedir el CUIT y verificarlo en ARCA','Por Página','Preguntarle a conocidos'],
+    correct:1,
+    feedback:'✅ ¡Correcto! El CUIT verificado en ARCA es el primer paso fundamental. Internet o redes sociales son fáciles de falsificar.'
+  },
+  {
+    q:'Al firmar un contrato de financiación, ¿qué información debe estar siempre por escrito?',
+    opts:['Solo el precio total del auto','La cuota, cantidad de cuotas, fecha de entrega y condiciones del plan','Solo el nombre de la agencia','El número de patente del auto'],
+    correct:1,
+    feedback:'✅ ¡Exacto! El contrato debe detallar la cuota exacta, cantidad de cuotas, fecha pactada de entrega y todas las condiciones. Nunca aceptes acuerdos solo verbales.'
+  },
+  {
+    q:'¿Qué es el Formulario 08 y para qué sirve?',
+    opts:['Es la factura de compra del auto','Es la autorización de transferencia de titularidad del vehículo','Es el libre deuda de patentes','Es el certificado de VTV'],
+    correct:1,
+    feedback:'✅ ¡Muy bien! El Formulario 08 habilita el cambio de titular. Sin él, la compra no tiene validez legal.'
+  },
+  {
+    q:'Cuando llegás a retirar el auto en la fecha pactada, ¿qué hacés primero?',
+    opts:['Firmás la recepción y te lo llevás','Revisás mecánicamente el auto y verificás que la documentación esté completa antes de firmar','Pagás la última cuota sin revisar nada','Confiás en que la agencia ya revisó todo'],
+    correct:1,
+    feedback:'✅ ¡Correcto! Revisá frenos, motor, luces, cubiertas, kilometraje y que toda la documentación (Formulario 08, título, libre deuda, VTV) esté en orden antes de firmar.'
+  },
+  {
+    q:'La agencia te dice "no te puedo dar factura pero el precio baja $200.000". ¿Qué hacés?',
+    opts:['Aceptás porque ahorrás dinero','Pedís factura igual aunque cueste más','Preguntás si pueden hacer un recibo informal','Da igual, el contrato es suficiente'],
+    correct:1,
+    feedback:'✅ ¡Excelente! Sin factura no tenés respaldo legal, no podés reclamar garantía ni hacer trámites. El ahorro no vale el riesgo.'
+  }
+];
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  const ticker=document.getElementById('ticker-wrap');
+  if(ticker)ticker.style.display=id==='screen-cert'?'none':'block';
+}
+
+async function startTraining(){
+  const f=document.getElementById('fn'),l=document.getElementById('ln'),d=document.getElementById('dni'),e=document.getElementById('email');
+  const ef=document.getElementById('err-fn'),el=document.getElementById('err-ln'),ed=document.getElementById('err-dni'),ee=document.getElementById('err-email');
+  let ok=true;
+  if(!f.value.trim()){f.classList.add('err');ef.style.display='block';ok=false;}else{f.classList.remove('err');ef.style.display='none';}
+  if(!l.value.trim()){l.classList.add('err');el.style.display='block';ok=false;}else{l.classList.remove('err');el.style.display='none';}
+  const dniClean=d.value.replace(/\D/g,'');
+  if(dniClean.length<7||dniClean.length>8){d.classList.add('err');ed.style.display='block';ok=false;}else{d.classList.remove('err');ed.style.display='none';}
+  const emailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailRegex.test(e.value.trim())){e.classList.add('err');ee.style.display='block';ok=false;}else{e.classList.remove('err');ee.style.display='none';}
+  
+  if(!ok)return;
+
+  // Change button state
+  const btn = document.querySelector('.btn-cta');
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Iniciando...';
+
+  userName=f.value.trim();userLastName=l.value.trim();userEmail=e.value.trim();
+  userDni=dniClean.replace(/(\d{1,3})(?=(\d{3})+(?!\d))/g,'$1.');
+  
+  // Start DB session
+  sessionId = await dbStartSession(userName, userLastName, userDni, userEmail);
+  
+  btn.disabled = false;
+  btn.textContent = originalText;
+
+  syncUI();buildGrid();updateStepper();
+  showScreen('screen-overview');
+}
+
+function syncUI(){
+  const init=(userName[0]||'')+(userLastName[0]||'');
+  ['ov-av','mod-av','qz-av'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=init.toUpperCase();});
+  ['ov-nm','mod-nm','qz-nm'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=userName;});
+  document.getElementById('ov-name').textContent=userName;
+}
+
+function updateStepper(){
+  ['ov-stepper','mod-stepper','qz-stepper'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.innerHTML=MODULES.map((_,i)=>{
+      let cls='step-dot';
+      if(completedModules.includes(i))cls+=' done';
+      else if(i===currentModule)cls+=' active';
+      return`<div class="${cls}"></div>`;
+    }).join('')+`<span class="step-count">${completedModules.length}/${MODULES.length}</span>`;
+  });
+}
+
+function buildGrid(){
+  document.getElementById('ov-grid').innerHTML=MODULES.map((m,i)=>{
+    const done=completedModules.includes(i);
+    return`<div class="mod-tile${done?' done':''}" onclick="goToModule(${i})">
+      <div class="tile-tag ${done?'tag-done':'tag-pending'}">${done?'✅ Completado':'Módulo '+(i+1)}</div>
+      <span class="tile-icon">${m.icon}</span>
+      <div class="tile-title">${m.title}</div>
+      <div class="tile-intro">${m.intro}</div>
+    </div>`;
+  }).join('');
+}
+
+function goToOverview(){buildGrid();updateStepper();showScreen('screen-overview');}
+
+function goToModule(idx){
+  currentModule=idx;
+  document.getElementById('mod-content').innerHTML=MODULES[idx].render();
+  updateStepper();showScreen('screen-module');
+}
+
+function completeModule(idx){
+  if(!completedModules.includes(idx)) {
+    completedModules.push(idx);
+    dbCompleteModule(sessionId, idx);
+  }
+  updateStepper();buildGrid();
+  if(idx<MODULES.length-1)goToModule(idx+1);
+  else startQuiz();
+}
+
+function toggleCheck(el){
+  el.classList.toggle('checked');
+  el.querySelector('.icl-box').textContent=el.classList.contains('checked')?'✓':'';
+  const all=document.querySelectorAll('.icl-item');
+  const done=document.querySelectorAll('.icl-item.checked').length;
+  const fill=document.getElementById('cl-fill');
+  const count=document.getElementById('cl-count');
+  if(fill)fill.style.width=(done/all.length*100)+'%';
+  if(count)count.textContent=done+' de '+all.length+' completados';
+}
+
+// ══════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════
+let currentQ=0,quizScoreLocal=0;
+
+function startQuiz(){currentQ=0;quizScoreLocal=0;renderQ();showScreen('screen-quiz');}
+
+function renderQ(){
+  if(currentQ>=QUIZ.length){showResults();return;}
+  const q=QUIZ[currentQ];
+  const pct=Math.round((currentQ/QUIZ.length)*100);
+  const letters=['A','B','C','D'];
+  document.getElementById('qz-content').innerHTML=`
+    <div class="q-num">Pregunta ${currentQ+1} de ${QUIZ.length}</div>
+    <div class="q-progress-bar"><div class="q-progress-fill" style="width:${pct}%"></div></div>
+    <div class="q-text">${q.q}</div>
+    <p class="q-hint">Seleccioná la respuesta correcta</p>
+    <div class="q-opts" id="q-opts">
+      ${q.opts.map((o,i)=>`
+        <div class="q-opt" id="opt-${i}" onclick="selectAnswer(${i})">
+          <div class="opt-ltr">${letters[i]}</div>${o}
+        </div>`).join('')}
+    </div>
+    <div class="q-feedback" id="q-fb"></div>
+    <div class="nav-bar" style="margin-top:0;padding-top:1rem">
+      <div></div>
+      <button class="btn-next" id="btn-qnext" onclick="nextQ()" disabled>
+        ${currentQ<QUIZ.length-1?'Siguiente →':'Ver resultados →'}
+      </button>
+    </div>`;
+}
+
+function selectAnswer(idx){
+  // Si el botón ya está habilitado, la pregunta ya fue respondida → ignorar
+  if(!document.getElementById('btn-qnext').disabled)return;
+  const q=QUIZ[currentQ];
+  const isCorrect = idx===q.correct;
+  const opts=document.querySelectorAll('.q-opt');
+  opts.forEach(o=>o.classList.add('locked'));
+  opts[idx].classList.add(isCorrect?'correct':'wrong');
+  if(isCorrect)quizScoreLocal++;
+  else opts[q.correct].classList.add('correct');
+  
+  // Save to DB
+  dbSaveAnswer(sessionId, currentQ, idx, isCorrect);
+
+  const fb=document.getElementById('q-fb');
+  fb.textContent=isCorrect?q.feedback:'❌ Incorrecto. '+q.feedback;
+  fb.className='q-feedback show '+(isCorrect?'ok':'fail');
+  document.getElementById('btn-qnext').disabled=false;
+}
+
+function nextQ(){currentQ++;renderQ();}
+
+function showResults(){
+  quizScore=quizScoreLocal;
+  const pct=Math.round((quizScore/QUIZ.length)*100);
+  const emoji=pct>=80?'🎉':pct>=60?'👍':'💪';
+  const msg=pct>=80
+    ?'¡Felicitaciones! Demostraste un excelente conocimiento sobre cómo comprar un auto de forma segura.'
+    :pct>=60
+    ?'Buen trabajo. Conocés los conceptos básicos, pero te recomendamos repasar los módulos.'
+    :'Necesitás repasar los módulos. La información es fundamental para evitar estafas. ¡No te rindas!';
+  document.getElementById('qz-content').innerHTML=`
+    <div class="q-num">Resultados finales</div>
+    <div class="q-progress-bar"><div class="q-progress-fill" style="width:100%"></div></div>
+    <div class="score-wrap">
+      <span class="score-emoji">${emoji}</span>
+      <div class="score-big">${quizScore}/${QUIZ.length}</div>
+      <p class="score-pct">${pct}% de respuestas correctas</p>
+      <p class="score-msg">${msg}</p>
+    </div>
+    <div class="nav-bar">
+      ${pct<80?`<button class="btn-back" onclick="startQuiz()">🔄 Repetir quiz</button>`:'<div></div>'}
+      <button class="btn-next" onclick="showCert()" ${pct<60?'disabled':''}>
+        ${pct>=60?'🏆 Ver mi certificado →':'Repetí el quiz para continuar'}
+      </button>
+    </div>`;
+}
+
+// ══════════════════════════════════════════
+// CERTIFICADO
+// ══════════════════════════════════════════
+function showCert(){
+  const now=new Date();
+  const certId='CSA-'+now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+Math.random().toString(36).substr(2,6).toUpperCase();
+  document.getElementById('cert-name').textContent=userName+' '+userLastName;
+  document.getElementById('cert-dni').textContent=userDni;
+  document.getElementById('cert-date').textContent=now.toLocaleDateString('es-AR',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('cert-score').textContent=quizScore+'/'+QUIZ.length+' ('+Math.round(quizScore/QUIZ.length*100)+'%)';
+  document.getElementById('cert-id').textContent=certId;
+  
+  // Emit in DB
+  dbEmitCert(sessionId, certId, quizScore, QUIZ.length);
+
+  showScreen('screen-cert');
+  launchConfetti();
+}
+
+function launchConfetti(){
+  const c=document.getElementById('confetti-container');c.innerHTML='';
+  const colors=['#F2AE30','#FF7A40','#0FD98A','#5B9BF8','#FF4B5C','#A78BFA','#FFE66D'];
+  for(let i=0;i<110;i++){
+    const p=document.createElement('div');p.className='cp';
+    p.style.cssText=`left:${Math.random()*100}%;top:-20px;width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${Math.random()*2+2.5}s;animation-delay:${Math.random()*2}s;`;
+    c.appendChild(p);
+  }
+  setTimeout(()=>c.innerHTML='',7000);
+}
+
+function reiniciar(){
+  userName='';userLastName='';userDni='';userEmail='';quizScore=0;completedModules=[];currentModule=0;
+  currentQ=0;quizScoreLocal=0;sessionId=null;
+  document.getElementById('fn').value='';
+  document.getElementById('ln').value='';
+  document.getElementById('dni').value='';
+  document.getElementById('email').value='';
+  showScreen('screen-login');
+}
+
+// ══════════════════════════════════════════
+// COUNTDOWN TIMER — Auto-reset cada 1-3 días aleatorios
+// ══════════════════════════════════════════
+(function(){
+  const STORAGE_KEY='csa_promo_end';
+  const randomDays=()=>Math.floor(Math.random()*3)+1; // 1, 2 o 3 días
+
+  function getOrCreateEnd(){
+    let end=localStorage.getItem(STORAGE_KEY);
+    if(!end||Date.now()>Number(end)){
+      const days=randomDays();
+      end=Date.now()+days*24*60*60*1000;
+      localStorage.setItem(STORAGE_KEY,end);
+    }
+    return Number(end);
+  }
+
+  function pad(n){return String(n).padStart(2,'0')}
+
+  function setNum(id,val){
+    const el=document.getElementById(id);
+    if(!el)return;
+    const prev=el.textContent;
+    if(prev!==val){
+      el.classList.remove('flip');
+      void el.offsetWidth; // reflow
+      el.classList.add('flip');
+      el.textContent=val;
+    }
+  }
+
+  function tick(){
+    const end=getOrCreateEnd();
+    const diff=end-Date.now();
+    if(diff<=0){
+      // Resetear y volver a generar
+      localStorage.removeItem(STORAGE_KEY);
+      getOrCreateEnd();
+      return;
+    }
+    const total=Math.floor(diff/1000);
+    const s=total%60;
+    const m=Math.floor(total/60)%60;
+    const h=Math.floor(total/3600)%24;
+    const d=Math.floor(total/86400);
+    setNum('cnt-d',pad(d));
+    setNum('cnt-h',pad(h));
+    setNum('cnt-m',pad(m));
+    setNum('cnt-s',pad(s));
+  }
+
+  // Inicializar al cargar
+  getOrCreateEnd();
+  tick();
+  setInterval(tick,1000);
+})();
+</script>
+</body>
+</html>

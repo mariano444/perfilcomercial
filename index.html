@@ -1,0 +1,2724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Mariano Manzanelli — MundoAuto Multimarcas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060a18;
+  --bg2: #0b1124;
+  --bg3: #0f1830;
+  --blue: #2563eb;
+  --blue-light: #3b82f6;
+  --blue-glow: rgba(37,99,235,0.18);
+  --gold: #f0b429;
+  --gold-dim: rgba(240,180,41,0.12);
+  --green: #22c55e;
+  --wa: #25d366;
+  --red: #ef4444;
+  --text: #f0f4ff;
+  --text-dim: rgba(240,244,255,0.52);
+  --text-faint: rgba(240,244,255,0.22);
+  --border: rgba(255,255,255,0.07);
+  --border-blue: rgba(37,99,235,0.28);
+  --r: 18px;
+  --r-sm: 12px;
+  --max: 480px;
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --font-display: 'Fraunces', serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes shimmer { from{transform:translateX(-200%)} to{transform:translateX(300%)} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+@keyframes galleryScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+@keyframes ringRotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes glow { 0%,100%{opacity:.5} 50%{opacity:1} }
+@keyframes borderGlow { 0%,100%{box-shadow:0 0 0 0 rgba(37,99,235,0)} 50%{box-shadow:0 0 20px 4px rgba(37,99,235,.15)} }
+
+/* ── TICKER ── */
+.ticker {
+  background: linear-gradient(90deg, #1a3bcc, #2563eb, #1a3bcc);
+  padding: 9px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-inner { display: inline-block; animation: ticker 28s linear infinite; }
+.tick {
+  display: inline-block;
+  padding: 0 36px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: #c7d9ff;
+  text-transform: uppercase;
+}
+.tick::after { content: '·'; margin-left: 36px; opacity: .4; }
+
+/* ── NAV ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: rgba(6,10,24,.96);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 21px;
+  letter-spacing: -.5px;
+  color: var(--text);
+}
+.logo span { color: var(--blue-light); font-style: italic; }
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(34,197,94,.09);
+  border: 1px solid rgba(34,197,94,.25);
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #4ade80;
+  letter-spacing: .02em;
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 1.4s infinite; }
+
+/* ── HERO ── */
+.hero {
+  padding: 28px 20px 0;
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(37,99,235,.12) 0%, transparent 70%), var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── MEDIA RING (shared style for avatar + video) ── */
+.media-ring-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.media-ring-wrap .ring-border {
+  border-radius: 50%;
+  padding: 3px;
+  background: conic-gradient(from 0deg, #2563eb, #60a5fa, #f0b429, #2563eb);
+}
+.media-ring-wrap .ring-inner {
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.media-ring-wrap .ring-inner img,
+.media-ring-wrap .ring-inner video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 50%;
+}
+/* stop conic gradient from spinning the inner */
+.media-ring-wrap .ring-inner { position: relative; z-index: 1; }
+.media-ring-wrap .ring-border { position: relative; }
+.media-ring-wrap .ring-border::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--bg);
+  z-index: 0;
+}
+.media-ring-wrap .ring-inner {
+  position: absolute;
+  inset: 3px;
+}
+
+/* Avatar */
+.av-wrap .ring-border { width: 82px; height: 82px; }
+.av-fallback { font-family: var(--font-display); font-weight: 900; font-size: 28px; color: var(--text); }
+.av-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 22px;
+  height: 22px;
+  background: var(--blue);
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 700;
+  z-index: 10;
+}
+
+/* ── PROFILE BLOCK ── */
+.profile-block {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  animation: fadeUp .5s ease both;
+}
+.pinfo h2 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 1.15;
+  margin-bottom: 3px;
+}
+.pinfo .role {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #93c5fd;
+  margin-bottom: 2px;
+}
+.pinfo .co {
+  font-size: 11.5px;
+  color: var(--text-faint);
+  font-weight: 400;
+}
+.pinfo .stars {
+  color: var(--gold);
+  font-size: 13px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.pinfo .stars span {
+  font-size: 11px;
+  color: var(--text-faint);
+  font-weight: 500;
+}
+
+/* ── TAGLINE ── */
+.hero-headline {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(34px, 9vw, 46px);
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+  margin-bottom: 12px;
+  animation: fadeUp .55s ease both;
+}
+.hero-headline em {
+  font-style: italic;
+  color: var(--blue-light);
+}
+.hero-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.75;
+  margin-bottom: 24px;
+  animation: fadeUp .65s ease both;
+  font-weight: 400;
+}
+
+/* ── STATS ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 28px;
+  animation: fadeUp .7s ease both;
+}
+.stat {
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 14px 8px;
+  text-align: center;
+}
+.stat-n {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--gold);
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-l {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+/* ── TRUST STRIP ── */
+.trust-strip {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+  animation: fadeUp .75s ease both;
+  padding-bottom: 28px;
+}
+.trust-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,.55);
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  border-radius: 99px;
+}
+
+/* ── SECTION HEADER ── */
+.sec-hd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px;
+  margin-bottom: 14px;
+}
+.sec-hd-line { width: 3px; height: 18px; background: var(--blue-light); border-radius: 2px; flex-shrink: 0; }
+.sec-hd-text {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 13px;
+  color: rgba(255,255,255,.7);
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* ── PROMO CARD ── */
+.promo-wrap { padding: 0 20px; margin-bottom: 24px; }
+.promo-card {
+  background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #f0b429 100%);
+  border-radius: 22px;
+  padding: 26px 22px 22px;
+  position: relative;
+  overflow: hidden;
+  animation: float 5s ease infinite, fadeUp .8s ease both;
+}
+.promo-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.22) 50%, transparent 100%);
+  animation: shimmer 3s ease-in-out infinite;
+  pointer-events: none;
+  width: 40%;
+}
+.promo-tag {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  background: var(--bg);
+  color: var(--gold);
+  font-family: var(--font);
+  font-weight: 800;
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  padding: 5px 12px;
+  border-radius: 0 0 10px 10px;
+  text-transform: uppercase;
+}
+.promo-badge {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 58px;
+  height: 58px;
+  background: var(--bg);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: float 2.5s ease infinite;
+}
+.promo-badge span {
+  font-size: 7.5px;
+  font-weight: 900;
+  color: var(--gold);
+  text-align: center;
+  line-height: 1.3;
+  font-family: var(--font);
+  text-transform: uppercase;
+}
+.promo-big {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 76px;
+  color: var(--bg);
+  line-height: .85;
+  letter-spacing: -4px;
+}
+.promo-off {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 38px;
+  color: var(--bg);
+  letter-spacing: -1px;
+  margin-bottom: 4px;
+}
+.promo-title {
+  font-family: var(--font);
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--bg);
+  margin: 8px 0 4px;
+}
+.promo-desc {
+  font-size: 12.5px;
+  color: rgba(6,10,24,.62);
+  margin-bottom: 10px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+.promo-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 16px; }
+.ptag {
+  font-size: 10.5px;
+  background: rgba(6,10,24,.12);
+  color: rgba(6,10,24,.72);
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-weight: 600;
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 13.5px;
+  text-decoration: none;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: transform .15s, box-shadow .15s;
+  letter-spacing: .01em;
+}
+.btn:active { transform: scale(.97); }
+.btn-dark { background: var(--bg); color: var(--text); }
+.btn-blue {
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(37,99,235,.3);
+}
+.btn-blue:hover { box-shadow: 0 6px 28px rgba(37,99,235,.45); }
+.btn-wa {
+  background: var(--wa);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(37,211,102,.25);
+}
+.btn-wa:hover { box-shadow: 0 6px 28px rgba(37,211,102,.4); }
+.btn-wa-outline {
+  background: rgba(37,211,102,.09);
+  border: 1px solid rgba(37,211,102,.3);
+  color: #4ade80;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 35%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+  animation: shimmer 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── TRASLADO ── */
+.traslado-wrap { padding: 0 20px; margin-bottom: 24px; }
+.traslado-card {
+  background: linear-gradient(135deg, rgba(37,99,235,.1), rgba(15,24,48,.5));
+  border: 1px solid var(--border-blue);
+  border-radius: var(--r);
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  animation: borderGlow 3.5s ease infinite;
+}
+.traslado-card::after {
+  content: '🚗';
+  position: absolute;
+  right: 12px; bottom: 8px;
+  font-size: 52px;
+  opacity: .08;
+  pointer-events: none;
+}
+.card-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #60a5fa;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.card-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.card-body {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+
+/* ── PLANES ── */
+.planes-wrap { padding: 0 20px 24px; }
+.plan {
+  border-radius: var(--r);
+  padding: 24px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.02);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.plan:hover { border-color: var(--blue-light); transform: translateY(-4px); }
+.plan.selected-plan {
+  border-color: var(--green);
+  background: rgba(34,197,94,0.06);
+  box-shadow: 0 0 20px rgba(34,197,94,0.15);
+}
+.plan.selected-plan::before {
+  content: 'PLAN SELECCIONADO';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--green);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 900;
+  padding: 4px 12px;
+  border-radius: 0 0 10px 10px;
+  letter-spacing: 0.05em;
+  z-index: 2;
+}
+.plan.best {
+  border-color: rgba(37,99,235,.45);
+  background: linear-gradient(135deg, rgba(37,99,235,.08), rgba(15,24,48,.4));
+}
+.plan.best.selected-plan {
+  border-color: var(--green);
+  background: linear-gradient(135deg, rgba(34,197,94,0.1), rgba(15,24,48,.4));
+}
+.plan-badge {
+  position: absolute;
+  top: 0; right: 14px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 0 0 10px 10px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.plan-name {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 14px;
+  color: #93c5fd;
+  margin-bottom: 2px;
+}
+.plan-sub {
+  font-size: 11.5px;
+  color: var(--text-faint);
+  margin-bottom: 14px;
+}
+.plan-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.plan-label { font-size: 11.5px; color: var(--text-faint); min-width: 60px; }
+.plan-val {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  color: var(--gold);
+}
+.plan-val2 {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text);
+}
+.plan-perks { display: flex; flex-wrap: wrap; gap: 5px; margin: 12px 0 16px; }
+.perk {
+  font-size: 10.5px;
+  background: rgba(37,99,235,.1);
+  border: 1px solid rgba(37,99,235,.18);
+  color: #93c5fd;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-weight: 500;
+}
+
+.catalog-box {
+  background: rgba(37,99,235,.07);
+  border: 1px solid rgba(37,99,235,.18);
+  border-radius: var(--r-sm);
+  padding: 18px;
+  margin-top: 4px;
+}
+.catalog-title {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 13.5px;
+  color: #93c5fd;
+  margin-bottom: 6px;
+}
+.catalog-body {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+
+/* ── VIDEO SECTION ── */
+.video-wrap-outer { padding: 0 20px; margin-bottom: 24px; }
+.video-media-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-circle-ring {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin: 0 auto;
+}
+.video-circle-ring .ring-conic {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  padding: 4px;
+  background: conic-gradient(from 0deg, #ef4444, #f97316, #f59e0b, #ef4444);
+  position: relative;
+}
+.video-circle-ring .ring-conic::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--bg);
+  z-index: 0;
+}
+.video-circle-ring video {
+  position: absolute;
+  inset: 4px;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 1;
+}
+.video-label {
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--text-faint);
+  margin-top: 10px;
+  letter-spacing: .04em;
+}
+.video-info-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.video-info-chip {
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(239,68,68,.1);
+  border: 1px solid rgba(239,68,68,.25);
+  color: #fca5a5;
+  padding: 4px 10px;
+  border-radius: 99px;
+}
+
+/* ── REVIEWS ── */
+.reviews-wrap { padding: 0 20px; margin-bottom: 24px; }
+.rev-carousel { position: relative; min-height: 160px; overflow: hidden; }
+.rev-card {
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 20px;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(24px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.rev-card.active {
+  opacity: 1;
+  pointer-events: auto;
+  position: relative;
+  transform: translateX(0);
+}
+.rev-stars { color: var(--gold); font-size: 14px; margin-bottom: 10px; letter-spacing: 2px; }
+.rev-text {
+  font-size: 13.5px;
+  color: rgba(255,255,255,.78);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  font-weight: 400;
+  font-style: italic;
+}
+.rev-text::before { content: '\201C'; color: var(--blue-light); font-size: 22px; line-height: 0; vertical-align: -4px; margin-right: 2px; font-style: normal; }
+.rev-text::after { content: '\201D'; color: var(--blue-light); font-size: 22px; line-height: 0; vertical-align: -4px; margin-left: 2px; font-style: normal; }
+.rev-author { display: flex; align-items: center; gap: 10px; }
+.rev-av {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.rev-name { font-size: 13px; font-weight: 700; color: rgba(255,255,255,.9); }
+.rev-loc { font-size: 11px; color: var(--text-faint); margin-top: 1px; }
+.rev-plan { font-size: 10.5px; color: #60a5fa; margin-top: 2px; font-weight: 600; }
+.rev-dots { display: flex; gap: 6px; justify-content: center; margin-top: 16px; }
+.rev-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.1); cursor: pointer; transition: background .3s, transform .3s; }
+.rev-dot.on { background: var(--blue-light); transform: scale(1.4); }
+
+/* ── GALLERY ── */
+.gallery-wrap { padding: 0 0 24px; overflow: hidden; }
+.gallery-track-outer { overflow: hidden; padding: 4px 0; }
+.gallery-track { display: flex; gap: 10px; animation: galleryScroll 32s linear infinite; width: max-content; }
+.gallery-track:hover { animation-play-state: paused; }
+.g-img {
+  width: 136px; height: 108px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 2px solid rgba(37,99,235,.15);
+  flex-shrink: 0;
+  transition: border-color .3s;
+}
+.g-img:hover { border-color: rgba(37,99,235,.5); }
+.gallery-caption {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 11.5px;
+  color: var(--text-faint);
+  padding: 0 20px;
+}
+
+/* ── AFIP BOX ── */
+.afip-wrap { padding: 0 20px; margin-bottom: 24px; }
+.afip-card {
+  background: rgba(34,197,94,.04);
+  border: 1px solid rgba(34,197,94,.18);
+  border-radius: var(--r);
+  padding: 20px;
+}
+.afip-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 13.5px;
+  color: #4ade80;
+  margin-bottom: 16px;
+}
+.afip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  font-size: 12.5px;
+  gap: 12px;
+}
+.afip-row:last-child { border-bottom: none; }
+.afip-key { color: var(--text-faint); flex-shrink: 0; font-weight: 400; }
+.afip-val { color: rgba(255,255,255,.82); font-weight: 600; text-align: right; }
+
+/* ── CONTACT ── */
+.contact-wrap { padding: 0 20px; margin-bottom: 24px; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cc {
+  background: rgba(255,255,255,.025);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  transition: border-color .25s;
+}
+.cc:hover { border-color: var(--border-blue); }
+.cc-icon { font-size: 20px; margin-bottom: 7px; }
+.cc-label {
+  font-size: 10px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+.cc-val { font-size: 12.5px; font-weight: 700; color: rgba(255,255,255,.88); line-height: 1.3; }
+
+/* ── CTA FINAL ── */
+.cta-wrap { padding: 0 20px 32px; }
+.cta-card {
+  background: linear-gradient(135deg, rgba(37,99,235,.12), rgba(240,180,41,.06));
+  border: 1px solid rgba(37,99,235,.28);
+  border-radius: 22px;
+  padding: 28px 22px;
+  text-align: center;
+}
+.cta-card h3 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.cta-card p {
+  font-size: 13.5px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 22px;
+  font-weight: 400;
+}
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  padding: 0 20px 32px;
+  font-size: 11px;
+  color: rgba(255,255,255,.14);
+  line-height: 2;
+}
+
+/* ── CLIENT LIST ── */
+.clients-wrap { padding: 0 20px; margin-bottom: 28px; }
+.clients-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.clients-count {
+  font-size: 11px;
+  color: var(--text-faint);
+  font-weight: 600;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 99px;
+}
+.client-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 8px;
+  transition: border-color .2s;
+  position: relative;
+}
+.client-item:hover { border-color: var(--border-blue); }
+.client-av-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.client-av {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.client-av img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+.client-verified {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 16px;
+  height: 16px;
+  background: #1d9bf0;
+  border-radius: 50%;
+  border: 2px solid var(--bg2);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.client-verified svg { width: 8px; height: 8px; }
+.client-info { flex: 1; min-width: 0; }
+.client-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,.9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.client-loc {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: rgba(29, 155, 240, 0.1);
+  color: #1d9bf0;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+.verified-badge svg {
+  width: 11px;
+  height: 11px;
+  fill: currentColor;
+}
+.client-right { flex-shrink: 0; text-align: right; }
+.client-plan {
+  font-size: 10px;
+  font-weight: 700;
+  color: #60a5fa;
+  background: rgba(37,99,235,.1);
+  border: 1px solid rgba(37,99,235,.2);
+  padding: 2px 7px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+.client-delivered {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #4ade80;
+  margin-top: 4px;
+  justify-content: flex-end;
+}
+.client-delivered::before { content: '🚗'; font-size: 10px; }
+.client-paying {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #60a5fa;
+  margin-top: 4px;
+  justify-content: flex-end;
+}
+.client-paying::before { content: '💳'; font-size: 10px; }
+.client-num {
+  position: absolute;
+  top: 50%;
+  left: -6px;
+  transform: translateY(-50%);
+  display: none;
+}
+
+/* ── RESPONSIVE ── */
+.course-banner-wrap { padding: 0 20px; margin: 16px 0; }
+.course-banner {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  animation: fadeUp 0.6s ease both;
+}
+.course-icon { font-size: 32px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 12px; }
+.course-info h4 { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+.course-info p { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.4; }
+.course-price { font-weight: 900; color: var(--gold); }
+
+.selector-wrap {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-blue);
+  border-radius: 18px;
+  padding: 24px 20px;
+  margin-bottom: 24px;
+}
+.selector-title { font-weight: 800; font-size: 15px; margin-bottom: 16px; text-align: center; color: #fff; }
+.cuota-options { display: flex; flex-direction: column; gap: 10px; }
+.cuota-opt {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: rgba(37,99,235,0.05);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.cuota-opt::after {
+  content: '✓';
+  position: absolute;
+  right: 16px;
+  font-size: 16px;
+  color: var(--green);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.cuota-opt.active {
+  background: rgba(37,99,235,0.15);
+  border-color: var(--blue-light);
+  box-shadow: 0 0 20px rgba(37,99,235,0.25);
+}
+.cuota-opt.active::after { opacity: 1; }
+.cuota-opt .opt-info { display: flex; flex-direction: column; gap: 2px; }
+.cuota-opt .opt-name { font-weight: 700; font-size: 13.5px; color: #fff; }
+.cuota-opt .opt-price { font-weight: 800; font-size: 16px; color: var(--gold); }
+.cuota-opt .opt-sub { font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.05em; }
+
+.autos-preview-wrap { padding: 0 20px; margin-bottom: 24px; }
+.autos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.auto-card {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  transition: all 0.2s;
+  aspect-ratio: 4/3;
+  position: relative;
+  cursor: pointer;
+}
+.auto-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.auto-card:hover { border-color: var(--blue-light); transform: translateY(-2px); }
+.auto-card.selected {
+  border-color: var(--green);
+  box-shadow: 0 0 15px rgba(34,197,94,0.3);
+}
+.auto-card.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--green);
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  border: 2px solid var(--bg2);
+}
+
+/* Cart Summary */
+.cart-summary {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border: 1px solid var(--border-blue);
+  border-radius: 24px;
+  padding: 24px;
+  margin: 20px;
+  animation: fadeUp 0.6s ease both;
+}
+.cart-title { font-family: var(--font-display); font-size: 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+.cart-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: var(--text-faint); }
+.cart-item span:last-child { color: #fff; font-weight: 700; }
+.cart-total { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
+.cart-total-label { font-weight: 800; color: var(--gold); }
+
+/* Course Details */
+.course-details {
+  display: none;
+  padding: 0 20px;
+  margin-top: -10px;
+  margin-bottom: 24px;
+  animation: fadeIn 0.4s ease;
+}
+.course-details.active { display: block; }
+.module-list { display: flex; flex-direction: column; gap: 10px; }
+.module-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.module-num {
+  background: var(--blue);
+  color: #fff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.module-info h5 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.module-info p { font-size: 11px; color: var(--text-faint); }
+
+/* Modal Catálogo */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6,10,24,.9);
+  backdrop-filter: blur(10px);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.active { display: flex; opacity: 1; }
+
+.modal-content {
+  background: var(--bg);
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  border-radius: 28px;
+  border: 1px solid var(--border-blue);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+}
+.modal-overlay.active .modal-content { transform: translateY(0); }
+
+.modal-header {
+  padding: 24px;
+  background: linear-gradient(to bottom, rgba(37,99,235,0.1), transparent);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.modal-header h4 { font-family: var(--font-display); font-size: 24px; color: #fff; }
+.modal-close {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-faint); font-size: 18px;
+  transition: all 0.2s;
+}
+.modal-close:hover { background: rgba(239,68,68,0.2); color: #ef4444; }
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+.modal-body::-webkit-scrollbar { width: 4px; }
+.modal-body::-webkit-scrollbar-thumb { background: var(--border-blue); border-radius: 10px; }
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (min-width: 481px) {
+  body { display: flex; flex-direction: column; align-items: center; }
+  body > * { width: 100%; max-width: var(--max); }
+}
+
+@media (max-width: 360px) {
+  .hero-headline { font-size: 30px; }
+  .promo-big { font-size: 60px; }
+  .stats-row { gap: 5px; }
+  .stat-n { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="tick">🔥 95% OFF en la gestión de carpeta — <span class="dynamic-deadline">SOLO HASTA EL VIERNES</span></span>
+    <span class="tick">🚗 Traslado a domicilio gratis en todo el país</span>
+    <span class="tick">📞 WhatsApp: 351-814-5289</span>
+    <span class="tick">✅ Verificado AFIP · CUIT 30-71234681-3</span>
+    <span class="tick">💳 Antes $200.000 → Ahora $10.000 · Solo con DNI</span>
+    <span class="tick">⭐ +500 autos entregados en Argentina</span>
+    <span class="tick">🔒 Retiro pactado y asegurado</span>
+    <span class="tick">🔥 95% OFF en la gestión de carpeta — <span class="dynamic-deadline">SOLO HASTA EL VIERNES</span></span>
+    <span class="tick">🚗 Traslado a domicilio gratis en todo el país</span>
+    <span class="tick">📞 WhatsApp: 351-814-5289</span>
+    <span class="tick">✅ Verificado AFIP · CUIT 30-71234681-3</span>
+    <span class="tick">💳 Antes $200.000 → Ahora $10.000 · Solo con DNI</span>
+    <span class="tick">⭐ +500 autos entregados en Argentina</span>
+    <span class="tick">🔒 Retiro pactado y asegurado</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="logo">Mundo<span>Auto</span></div>
+  <div class="status-pill"><span class="dot"></span>Mariano en línea</div>
+</nav>
+
+<!-- BANNER CURSO -->
+<div class="course-banner-wrap">
+  <div class="course-banner">
+    <div class="course-icon">🎓</div>
+    <div class="course-info">
+      <h4>Curso de Capacitación</h4>
+      <p>Accedé a nuestro curso exclusivo por solo <span class="course-price">$10.000</span>. ¡Aprendé todo sobre el mercado automotriz!</p>
+      <div style="display:flex;gap:10px;margin-top:8px;align-items:center">
+        <button onclick="toggleCourseDetails()" class="btn btn-blue" style="padding:6px 12px;font-size:11px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2)">
+          🔍 Ver módulos del curso
+        </button>
+        <p style="font-size:10px;opacity:0.7">🎁 Ingreso GRATIS con tu gestión.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="course-details" id="course-details">
+  <div class="module-list">
+    <div class="module-item"><div class="module-num">1</div><div class="module-info"><h5>Verificar la agencia</h5><p>CUIT, estado en ARCA y solvencia legal.</p></div></div>
+    <div class="module-item"><div class="module-num">2</div><div class="module-info"><h5>Constancia ARCA</h5><p>Cómo descargar y leer la constancia oficial.</p></div></div>
+    <div class="module-item"><div class="module-num">3</div><div class="module-info"><h5>Checklist de Unidad</h5><p>Revisión mecánica y estética antes de aceptar.</p></div></div>
+    <div class="module-item"><div class="module-num">4</div><div class="module-info"><h5>Transferencia y Formulario 08</h5><p>Trámites legales para que el auto sea tuyo.</p></div></div>
+    <div class="module-item"><div class="module-num">5</div><div class="module-info"><h5>Derechos del Consumidor</h5><p>Ley 24.240: Tu protección legal total.</p></div></div>
+    <div class="module-item"><div class="module-num">6</div><div class="module-info"><h5>Seguro y Patentamiento</h5><p>Puesta en calle legal y asegurada.</p></div></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+
+  <!-- PROFILE -->
+  <div class="profile-block" style="animation-delay:.05s">
+    <div class="media-ring-wrap av-wrap">
+      <div class="ring-border">
+        <div class="ring-inner">
+          <img src="https://supervisor-mundoauto.vercel.app/mariano-profile.jpg" alt="Mariano Manzanelli"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span class="av-fallback" style="display:none">MM</span>
+        </div>
+      </div>
+      <div class="av-badge">✓</div>
+    </div>
+    <div class="pinfo">
+      <h2>Mariano Manzanelli</h2>
+      <div class="role">Supervisor · Asesor Comercial Automotriz</div>
+      <div class="co">MundoAuto Multimarcas S.A. · Córdoba</div>
+      <div class="stars">★★★★★ <span>Calificación certificada</span></div>
+    </div>
+  </div>
+
+  <div class="hero-headline" style="animation-delay:.1s">
+    Tu auto soñado,<br><em>100% financiado.</em>
+  </div>
+  <div class="hero-sub" style="animation-delay:.18s">
+    Hola, soy Mariano. Gestión rápida y simple — solo con tu DNI, sin verificar ingresos, con traslado gratis a tu puerta en todo el país.
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row" style="animation-delay:.24s">
+    <div class="stat">
+      <span class="stat-n">500+</span>
+      <div class="stat-l">Autos entregados</div>
+    </div>
+    <div class="stat">
+      <span class="stat-n">98%</span>
+      <div class="stat-l">Satisfacción</div>
+    </div>
+    <div class="stat">
+      <span class="stat-n">12+</span>
+      <div class="stat-l">Años en el mercado</div>
+    </div>
+  </div>
+
+  <!-- TRUST CHIPS -->
+  <div class="trust-strip" style="animation-delay:.3s">
+    <span class="trust-chip">🔒 AFIP verificado</span>
+    <span class="trust-chip">📜 Garantía legal</span>
+    <span class="trust-chip">⚡ Respuesta en 5 min</span>
+    <span class="trust-chip">🇦🇷 Envíos a todo el país</span>
+  </div>
+
+  <!-- PROMO 95% OFF -->
+  <div class="promo-card" style="animation-delay:.35s">
+    <div class="promo-tag" id="promo-tag">⚡ Oferta exclusiva — Vence el viernes</div>
+    <div class="promo-badge"><span>95%<br>OFF</span></div>
+
+    <!-- Promo image -->
+    <div style="margin:0 0 14px;border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.3)">
+      <img src="publicidad.png"
+           alt="MundoAuto"
+           style="width:100%;height:auto;display:block;border-radius:14px"
+           onerror="this.style.display='none'">
+    </div>
+
+    <div class="promo-big">95%</div>
+    <div class="promo-off">OFF</div>
+    <div class="promo-title">en la gestión de la carpeta</div>
+
+    <!-- Price comparison -->
+    <div style="display:flex;align-items:center;gap:12px;margin:10px 0 4px">
+      <div style="display:flex;flex-direction:column;align-items:flex-start">
+        <span style="font-size:10px;font-weight:700;color:rgba(6,10,24,.5);text-transform:uppercase;letter-spacing:.06em">Antes</span>
+        <span style="font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:rgba(6,10,24,.4);text-decoration:line-through;letter-spacing:-1px">$200.000</span>
+      </div>
+      <div style="font-size:22px;color:rgba(6,10,24,.3)">→</div>
+      <div style="display:flex;flex-direction:column;align-items:flex-start">
+        <span style="font-size:10px;font-weight:700;color:#064e3b;text-transform:uppercase;letter-spacing:.06em">Ahora</span>
+        <span style="font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:#064e3b;letter-spacing:-2px;line-height:1">$10.000</span>
+      </div>
+    </div>
+
+    <div class="promo-desc">Gestioná tu carpeta hoy por solo $10.000. Accedé al catálogo completo, asesoramiento prioritario y traslado gratis a tu puerta.</div>
+
+    <!-- Countdown -->
+    <div style="background:rgba(6,10,24,.18);border-radius:12px;padding:12px;margin:10px 0 14px;text-align:center">
+      <div style="font-size:10px;font-weight:700;color:rgba(6,10,24,.6);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px" id="timer-label">⏳ La oferta vence el viernes en:</div>
+      <div style="display:flex;justify-content:center;gap:8px" id="countdown-wrap">
+        <div style="background:rgba(6,10,24,.22);border-radius:8px;padding:6px 10px;min-width:48px;text-align:center">
+          <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:#064e3b;line-height:1" id="cd-d">00</div>
+          <div style="font-size:9px;font-weight:700;color:rgba(6,10,24,.5);text-transform:uppercase;margin-top:2px">días</div>
+        </div>
+        <div style="background:rgba(6,10,24,.22);border-radius:8px;padding:6px 10px;min-width:48px;text-align:center">
+          <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:#064e3b;line-height:1" id="cd-h">00</div>
+          <div style="font-size:9px;font-weight:700;color:rgba(6,10,24,.5);text-transform:uppercase;margin-top:2px">hs</div>
+        </div>
+        <div style="background:rgba(6,10,24,.22);border-radius:8px;padding:6px 10px;min-width:48px;text-align:center">
+          <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:#064e3b;line-height:1" id="cd-m">00</div>
+          <div style="font-size:9px;font-weight:700;color:rgba(6,10,24,.5);text-transform:uppercase;margin-top:2px">min</div>
+        </div>
+        <div style="background:rgba(6,10,24,.22);border-radius:8px;padding:6px 10px;min-width:48px;text-align:center">
+          <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:#064e3b;line-height:1" id="cd-s">00</div>
+          <div style="font-size:9px;font-weight:700;color:rgba(6,10,24,.5);text-transform:uppercase;margin-top:2px">seg</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="promo-tags">
+      <span class="ptag">Solo $10.000</span>
+      <span class="ptag">Catálogo completo</span>
+      <span class="ptag">Asesoramiento prioritario</span>
+      <span class="ptag">Sin compromiso</span>
+    </div>
+    <a href="https://wa.me/5493518145289?text=%F0%9F%94%A5+%C2%A1Hola+Mariano%21+Vi+la+promo+del+95%25+OFF+en+la+gesti%C3%B3n+de+carpeta+por+%2410.000+y+quiero+aprovecharla.+%C2%BFMe+pods+contar+m%C3%A1s%3F"
+       class="btn btn-dark" target="_blank">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      ¡Quiero la gestión por $10.000!
+    </a>
+  </div>
+
+  <!-- TRASLADO -->
+  <div class="traslado-card" style="margin-bottom:0">
+    <div class="card-tag">🚗 Servicio exclusivo — sin costo</div>
+    <div class="card-title">Traslado a domicilio — ¡GRATIS!</div>
+    <div class="card-body">Nos ocupamos de llevar tu auto hasta la puerta de tu casa en cualquier punto del país. Retiro pactado y asegurado, sin sorpresas.</div>
+    <a href="https://wa.me/5493518145289?text=%F0%9F%9A%97+%C2%A1Hola+Mariano%21+Me+interesa+el+servicio+de+traslado+a+domicilio.+%C2%BFMe+pods+dar+m%C3%A1s+informaci%C3%B3n%3F"
+       class="btn btn-blue" target="_blank">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Consultar traslado por WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- PLANES -->
+<div class="sec-hd" style="margin-top:28px" id="planes-section">
+  <div class="sec-hd-line"></div>
+  <span class="sec-hd-text">1. Elegí tu Plan de Financiación 💥</span>
+</div>
+<p style="text-align:center;font-size:13px;color:var(--text-faint);margin: -10px 20px 20px;line-height:1.4">
+  Primero seleccioná el plan más conveniente para vos. Una vez elegido, podrás seleccionar los autos que te interesan del catálogo.
+</p>
+<div class="planes-wrap">
+
+  <div class="plan" id="plan-1" onclick="selectPlan(1, 'Plan Accesible', '$230.000', '$500.000', '7')">
+    <div class="plan-name">Opción 1 — Plan Accesible</div>
+    <div class="plan-sub">Ideal para primeros compradores</div>
+    <div class="plan-price-row"><span class="plan-label">Entrega:</span><span class="plan-val">$500.000</span></div>
+    <div class="plan-price-row"><span class="plan-label">Cuotas:</span><span class="plan-val2">7 × $230.000</span></div>
+    <div style="font-size:11px;color:#4ade80;font-weight:700;margin-top:10px">✅ Requisito mínimo para retirar el auto</div>
+    <div class="plan-perks">
+      <span class="perk">Solo DNI</span><span class="perk">Traslado gratis</span>
+    </div>
+    <button class="btn btn-wa-outline" style="pointer-events:none">Seleccionar este plan</button>
+  </div>
+
+  <div class="plan best" id="plan-2" onclick="selectPlan(2, 'Plan Profesional', '$410.000', '$850.000', '5')">
+    <div class="plan-badge">⭐ Más elegida</div>
+    <div class="plan-name">Opción 2 — Plan Profesional</div>
+    <div class="plan-sub">El favorito en toda Argentina</div>
+    <div class="plan-price-row"><span class="plan-label">Entrega:</span><span class="plan-val">$850.000</span></div>
+    <div class="plan-price-row"><span class="plan-label">Cuotas:</span><span class="plan-val2">5 × $410.000</span></div>
+    <div style="font-size:11px;color:#4ade80;font-weight:700;margin-top:10px">✅ Requisito ideal para retirar el auto</div>
+    <div class="plan-perks">
+      <span class="perk">Garantía legal</span><span class="perk">Acompañamiento</span>
+    </div>
+    <button class="btn btn-wa" style="pointer-events:none">Seleccionar este plan</button>
+  </div>
+
+  <div class="plan" id="plan-3" onclick="selectPlan(3, 'Plan Ejecutivo', '$610.000', '$1.300.000', '3')">
+    <div class="plan-name">Opción 3 — Plan Ejecutivo</div>
+    <div class="plan-sub">Cuotas cortas, liquidación rápida</div>
+    <div class="plan-price-row"><span class="plan-label">Entrega:</span><span class="plan-val">$1.300.000</span></div>
+    <div class="plan-price-row"><span class="plan-label">Cuotas:</span><span class="plan-val2">3 × $610.000</span></div>
+    <div style="font-size:11px;color:#4ade80;font-weight:700;margin-top:10px">✅ Retiro inmediato pactado</div>
+    <div class="plan-perks">
+      <span class="perk">Atención VIP</span><span class="perk">Retiro inmediato</span>
+    </div>
+    <button class="btn btn-wa-outline" style="pointer-events:none">Seleccionar este plan</button>
+  </div>
+</div>
+
+<!-- SELECCIÓN DE AUTO Y CARRITO -->
+<div class="sec-hd" style="margin-top:28px">
+  <div class="sec-hd-line"></div>
+  <span class="sec-hd-text">2. Seleccioná tus Unidades 🚗</span>
+</div>
+
+<div class="autos-preview-wrap">
+  <p style="text-align:center;font-size:12px;color:var(--text-faint);margin-bottom:12px">Podés seleccionar uno o varios autos del catálogo.</p>
+  <div class="autos-grid" id="autos-preview-grid">
+    <div class="auto-card" onclick="toggleCarSelection(this, 'Hilux 2024')"><img src="autos/WhatsApp Image 2026-05-12 at 8.59.03 PM.jpeg" alt="Auto 1"></div>
+    <div class="auto-card" onclick="toggleCarSelection(this, 'Cronos 2024')"><img src="autos/WhatsApp Image 2026-05-12 at 8.59.04 PM (1).jpeg" alt="Auto 2"></div>
+    <div class="auto-card" onclick="toggleCarSelection(this, 'Amarok V6')"><img src="autos/WhatsApp Image 2026-05-12 at 8.59.04 PM (2).jpeg" alt="Auto 3"></div>
+    <div class="auto-card" onclick="toggleCarSelection(this, 'Peugeot 208')"><img src="autos/WhatsApp Image 2026-05-12 at 8.59.04 PM (3).jpeg" alt="Auto 4"></div>
+  </div>
+
+  <button onclick="toggleCatalog()" class="btn btn-dark" style="font-size:14px;padding:16px;border:1px solid var(--border-blue);margin-bottom:20px">
+    ✨ Abrir Catálogo Completo (31 unidades)
+  </button>
+
+  <!-- MODAL CATÁLOGO -->
+  <div class="modal-overlay" id="modal-catalog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Nuestras Unidades</h4>
+        <div class="modal-close" onclick="toggleCatalog()">✕</div>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--text-faint);margin-bottom:16px;text-align:center">✨ Seleccioná las unidades que te interesan para tu plan.</p>
+        <div class="catalog-grid" id="catalog-grid">
+          <!-- Images injected by JS -->
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex;flex-direction:column;gap:10px">
+        <p style="font-size:11px;color:var(--text-faint);text-align:center">🔒 Tu selección es sin compromiso y será enviada para asesoramiento prioritario.</p>
+        <button onclick="toggleCatalog()" class="btn btn-blue" style="width:100%;padding:16px;font-weight:800;font-size:15px;letter-spacing:0.5px">
+          CONFIRMAR MI SELECCIÓN
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TU CARRITO -->
+  <div class="cart-summary" id="cart-summary">
+    <div class="cart-title">🛒 Tu Selección</div>
+    <div id="cart-content">
+      <p style="font-size:13px;color:var(--text-faint)">Seleccioná un plan y al menos un auto para continuar...</p>
+    </div>
+    <button id="wa-btn" onclick="sendSelectionToWA()" class="btn btn-wa" style="display:none;margin-top:20px;width:100%;padding:18px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Enviar Pedido por WhatsApp
+    </button>
+  </div>
+</div>
+<!-- VIDEO -->
+<div class="sec-hd">
+  <div class="sec-hd-line"></div>
+  <span class="sec-hd-text">🎬 Mirá cómo trabajamos</span>
+</div>
+<div class="video-wrap-outer">
+  <div class="video-circle-ring">
+    <div class="ring-conic"></div>
+    <video
+      src="https://res.cloudinary.com/dwf6m7h3t/video/upload/v1767915636/d79b786c-c399-44ae-ba2d-f9aff8cfa367_rtcn15.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+    ></video>
+  </div>
+  <div class="video-info-row">
+    <span class="video-info-chip">📹 Proceso real de entrega</span>
+    <span class="video-info-chip">MundoAuto Multimarcas</span>
+  </div>
+  <div class="video-label">Así trabajamos — transparente, documentado y con garantía</div>
+</div>
+
+<!-- REVIEWS -->
+<div class="sec-hd">
+  <div class="sec-hd-line"></div>
+  <span class="sec-hd-text">💬 Lo que dicen nuestros clientes</span>
+</div>
+<div class="reviews-wrap">
+  <div class="rev-carousel" id="rc">
+
+    <div class="rev-card active">
+      <div class="rev-stars">★★★★★</div>
+      <div class="rev-text">Mariano me asesoró desde el primer mensaje. Tramité todo desde Jujuy, me llegó el auto en perfectas condiciones y sin pagar el traslado. Atención de otro nivel.</div>
+      <div class="rev-author">
+        <div class="rev-av" style="background:#2563eb">LP</div>
+        <div><div class="rev-name">Laura Pereyra</div><div class="rev-loc">San Salvador de Jujuy, Jujuy</div><div class="rev-plan">Plan Accesible · 7 cuotas</div></div>
+      </div>
+    </div>
+
+    <div class="rev-card">
+      <div class="rev-stars">★★★★★</div>
+      <div class="rev-text">Nunca pensé que iba a tener mi auto propio. Solo con el DNI, sin pedir recibo de sueldo. Mariano me explicó todo paso a paso y en pocos días ya estaba manejando el mío.</div>
+      <div class="rev-author">
+        <div class="rev-av" style="background:#16a34a">DM</div>
+        <div><div class="rev-name">Diego Medina</div><div class="rev-loc">Salta Capital, Salta</div><div class="rev-plan">Plan Accesible · 7 cuotas</div></div>
+      </div>
+    </div>
+
+    <div class="rev-card">
+      <div class="rev-stars">★★★★★</div>
+      <div class="rev-text">La diferencia con Mariano es el trato: te acompaña en todo el proceso, no te deja solo. Me trajeron el auto a Buenos Aires sin ningún costo extra. Increíble.</div>
+      <div class="rev-author">
+        <div class="rev-av" style="background:#7c3aed">AC</div>
+        <div><div class="rev-name">Alejandro Castillo</div><div class="rev-loc">Palermo, Buenos Aires</div><div class="rev-plan">Plan Profesional · 5 cuotas</div></div>
+      </div>
+    </div>
+
+    <div class="rev-card">
+      <div class="rev-stars">★★★★★</div>
+      <div class="rev-text">Hice la consulta un lunes y el viernes ya tenía el auto en la puerta de mi casa en Santa Fe. Proceso rapidísimo, todo documentado y con garantía legal. Recomendadísimo.</div>
+      <div class="rev-author">
+        <div class="rev-av" style="background:#b45309">PF</div>
+        <div><div class="rev-name">Patricia Fernández</div><div class="rev-loc">Santa Fe Capital, Santa Fe</div><div class="rev-plan">Plan Profesional · 5 cuotas</div></div>
+      </div>
+    </div>
+
+    <div class="rev-card">
+      <div class="rev-stars">★★★★★</div>
+      <div class="rev-text">Elegí el Plan Ejecutivo porque quería saldar rápido. Mariano me mostró las opciones, elegí del catálogo y en menos de una semana estaba en CABA. Excelente empresa.</div>
+      <div class="rev-author">
+        <div class="rev-av" style="background:#dc2626">EL</div>
+        <div><div class="rev-name">Eduardo Lorenzetti</div><div class="rev-loc">San Telmo, CABA</div><div class="rev-plan">Plan Ejecutivo · 3 cuotas</div></div>
+      </div>
+    </div>
+
+    <div class="rev-card">
+      <div class="rev-stars">★★★★★</div>
+      <div class="rev-text">Lo que más me sorprendió fue la transparencia total. Datos de AFIP verificables, garantía legal, todo por escribanía. Compré con una confianza que no esperaba encontrar online.</div>
+      <div class="rev-author">
+        <div class="rev-av" style="background:#0891b2">RZ</div>
+        <div><div class="rev-name">Romina Zárate</div><div class="rev-loc">Caballito, Buenos Aires</div><div class="rev-plan">Plan Ejecutivo · 3 cuotas</div></div>
+      </div>
+    </div>
+
+    <div class="rev-card">
+      <div class="rev-stars">★★★★★</div>
+      <div class="rev-text">Vivo en Formosa y no creía que iba a poder hacer todo a distancia. Mariano me mandó el catálogo, elegí el auto, arreglamos el plan y me lo trajeron a casa sin problema.</div>
+      <div class="rev-author">
+        <div class="rev-av" style="background:#059669">MD</div>
+        <div><div class="rev-name">Mónica Domínguez</div><div class="rev-loc">Formosa Capital, Formosa</div><div class="rev-plan">Plan Accesible · 7 cuotas</div></div>
+      </div>
+    </div>
+
+    <div class="rev-card">
+      <div class="rev-stars">★★★★★</div>
+      <div class="rev-text">Hice la permuta de mi auto viejo y me lo tomaron en parte de pago. Muy ágil todo. Mariano responde rápido por WhatsApp, siempre disponible. Una empresa seria de verdad.</div>
+      <div class="rev-author">
+        <div class="rev-av" style="background:#9333ea">GM</div>
+        <div><div class="rev-name">Gabriela Montoya</div><div class="rev-loc">General Pico, La Pampa</div><div class="rev-plan">Plan Profesional · 5 cuotas</div></div>
+      </div>
+    </div>
+
+    <div class="rev-card">
+      <div class="rev-stars">★★★★★</div>
+      <div class="rev-text">Mi marido y yo dudamos mucho al principio porque éramos de Mendoza. Pero Mariano nos dio tanta seguridad que avanzamos. El auto llegó perfecto y el proceso fue impecable.</div>
+      <div class="rev-author">
+        <div class="rev-av" style="background:#e11d48">VR</div>
+        <div><div class="rev-name">Valeria Ríos</div><div class="rev-loc">Ciudad de Mendoza, Mendoza</div><div class="rev-plan">Plan Accesible · 7 cuotas</div></div>
+      </div>
+    </div>
+
+    <div class="rev-card">
+      <div class="rev-stars">★★★★★</div>
+      <div class="rev-text">Trabajo en el campo y necesitaba una camioneta que aguante. Mariano me armó el plan a medida, me dio varias opciones del catálogo y encontré exactamente lo que buscaba.</div>
+      <div class="rev-author">
+        <div class="rev-av" style="background:#ca8a04">JB</div>
+        <div><div class="rev-name">Javier Bustos</div><div class="rev-loc">Río Cuarto, Córdoba</div><div class="rev-plan">Plan Profesional · 5 cuotas</div></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="rev-dots" id="rdots"></div>
+</div>
+
+<!-- CLIENTS LIST -->
+<div class="sec-hd">
+  <div class="sec-hd-line"></div>
+  <span class="sec-hd-text">👥 Clientes que ingresaron al plan</span>
+</div>
+<div class="clients-wrap">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div style="font-size:11px;color:var(--text-faint);font-weight:600">Lista pública verificada</div>
+    <div class="clients-count">42 clientes</div>
+  </div>
+
+  <!-- Client 1 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#2563eb">
+        <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="Laura Pereyra" onerror="this.style.display='none';this.parentElement.textContent='LP'">
+      </div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Laura Pereyra</div>
+      <div class="client-loc">📍 San Salvador de Jujuy, Jujuy</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 2 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#16a34a">DM</div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Diego Medina</div>
+      <div class="client-loc">📍 Salta Capital, Salta</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 3 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#7c3aed">AC</div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Alejandro Castillo</div>
+      <div class="client-loc">📍 Palermo, Buenos Aires</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 4 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#b45309">
+        <img src="https://randomuser.me/api/portraits/women/4.jpg" alt="Patricia Fernández" onerror="this.style.display='none';this.parentElement.textContent='PF'">
+      </div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Patricia Fernández</div>
+      <div class="client-loc">📍 Santa Fe Capital, Santa Fe</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 5 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#dc2626">EL</div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Eduardo Lorenzetti</div>
+      <div class="client-loc">📍 San Telmo, CABA</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 6 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#0891b2">
+        <img src="https://randomuser.me/api/portraits/women/6.jpg" alt="Romina Zárate" onerror="this.style.display='none';this.parentElement.textContent='RZ'">
+      </div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Romina Zárate</div>
+      <div class="client-loc">📍 Caballito, Buenos Aires</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 7 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#059669">MD</div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Mónica Domínguez</div>
+      <div class="client-loc">📍 Formosa Capital, Formosa</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 8 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#9333ea">
+        <img src="https://randomuser.me/api/portraits/women/8.jpg" alt="Gabriela Montoya" onerror="this.style.display='none';this.parentElement.textContent='GM'">
+      </div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Gabriela Montoya</div>
+      <div class="client-loc">📍 General Pico, La Pampa</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 9 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#e11d48">VR</div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Valeria Ríos</div>
+      <div class="client-loc">📍 Ciudad de Mendoza, Mendoza</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 10 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#ca8a04">
+        <img src="https://randomuser.me/api/portraits/men/10.jpg" alt="Javier Bustos" onerror="this.style.display='none';this.parentElement.textContent='JB'">
+      </div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Javier Bustos</div>
+      <div class="client-loc">📍 Río Cuarto, Córdoba</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 11 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#1d4ed8">
+        <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="Martín González" onerror="this.style.display='none';this.parentElement.textContent='MG'">
+      </div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Martín González</div>
+      <div class="client-loc">📍 Resistencia, Chaco</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 12 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#be123c">
+        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Sofía Ortega" onerror="this.style.display='none';this.parentElement.textContent='SO'">
+      </div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Sofía Ortega</div>
+      <div class="client-loc">📍 Neuquén Capital, Neuquén</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 13 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#065f46">
+        <img src="https://randomuser.me/api/portraits/men/13.jpg" alt="Carlos Ruiz" onerror="this.style.display='none';this.parentElement.textContent='CR'">
+      </div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Carlos Ruiz</div>
+      <div class="client-loc">📍 Corrientes Capital, Corrientes</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 14 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#6d28d9">
+        <img src="https://randomuser.me/api/portraits/women/14.jpg" alt="Ana Suárez" onerror="this.style.display='none';this.parentElement.textContent='AS'">
+      </div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Ana Suárez</div>
+      <div class="client-loc">📍 Mar del Plata, Buenos Aires</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 15 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#c2410c">RL</div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Rodrigo López</div>
+      <div class="client-loc">📍 San Juan Capital, San Juan</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 16 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#0f766e">NV</div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Natalia Vega</div>
+      <div class="client-loc">📍 Bahía Blanca, Buenos Aires</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 17 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#4338ca">FM</div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Fernando Morales</div>
+      <div class="client-loc">📍 Posadas, Misiones</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 18 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#b91c1c">
+        <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Claudia Pérez" onerror="this.style.display='none';this.parentElement.textContent='CP'">
+      </div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Claudia Pérez</div>
+      <div class="client-loc">📍 Rosario, Santa Fe</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 19 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#15803d">LT</div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Lucas Torres</div>
+      <div class="client-loc">📍 La Plata, Buenos Aires</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 20 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#7e22ce">MH</div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">María Herrera</div>
+      <div class="client-loc">📍 Comodoro Rivadavia, Chubut</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 21 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#1e40af">
+        <img src="https://randomuser.me/api/portraits/men/21.jpg" alt="Jorge Acosta" onerror="this.style.display='none';this.parentElement.textContent='JA'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Jorge Acosta</div>
+      <div class="client-loc">📍 Tucumán Capital, Tucumán</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 22 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#0369a1">VN</div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Verónica Noriega</div>
+      <div class="client-loc">📍 Villa Carlos Paz, Córdoba</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 23 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#166534">
+        <img src="https://randomuser.me/api/portraits/men/23.jpg" alt="Héctor Quiroga" onerror="this.style.display='none';this.parentElement.textContent='HQ'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Héctor Quiroga</div>
+      <div class="client-loc">📍 Mendoza Capital, Mendoza</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 24 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#9d174d">
+        <img src="https://randomuser.me/api/portraits/women/24.jpg" alt="Isabel Ramos" onerror="this.style.display='none';this.parentElement.textContent='IR'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Isabel Ramos</div>
+      <div class="client-loc">📍 Paraná, Entre Ríos</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 25 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#78350f">OC</div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Oscar Cabrera</div>
+      <div class="client-loc">📍 Río Gallegos, Santa Cruz</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 26 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#1a56db">
+        <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Yanina Flores" onerror="this.style.display='none';this.parentElement.textContent='YF'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Yanina Flores</div>
+      <div class="client-loc">📍 San Luis Capital, San Luis</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 27 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#065f46">RM</div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Roberto Mansilla</div>
+      <div class="client-loc">📍 Catamarca Capital, Catamarca</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 28 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#b45309">
+        <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Lorena Espinosa" onerror="this.style.display='none';this.parentElement.textContent='LE'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Lorena Espinosa</div>
+      <div class="client-loc">📍 San Rafael, Mendoza</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 29 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#4f46e5">
+        <img src="https://randomuser.me/api/portraits/men/29.jpg" alt="Gustavo Barros" onerror="this.style.display='none';this.parentElement.textContent='GB'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Gustavo Barros</div>
+      <div class="client-loc">📍 Concordia, Entre Ríos</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 30 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#be185d">KD</div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Karina Díaz</div>
+      <div class="client-loc">📍 Quilmes, Buenos Aires</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 31 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#155e75">PA</div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Pablo Arce</div>
+      <div class="client-loc">📍 Oberá, Misiones</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 32 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#991b1b">
+        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Teresa Villanueva" onerror="this.style.display='none';this.parentElement.textContent='TV'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Teresa Villanueva</div>
+      <div class="client-loc">📍 Lanús, Buenos Aires</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 33 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#064e3b">EG</div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Ernesto Godoy</div>
+      <div class="client-loc">📍 Viedma, Río Negro</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 34 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#5b21b6">
+        <img src="https://randomuser.me/api/portraits/women/34.jpg" alt="Melisa Waisman" onerror="this.style.display='none';this.parentElement.textContent='MW'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Melisa Waisman</div>
+      <div class="client-loc">📍 Palermo, CABA</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 35 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#1e3a5f">
+        <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="Andrés Figueroa" onerror="this.style.display='none';this.parentElement.textContent='AF'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Andrés Figueroa</div>
+      <div class="client-loc">📍 Alta Gracia, Córdoba</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 36 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#92400e">BN</div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Beatriz Navarro</div>
+      <div class="client-loc">📍 San Nicolás, Buenos Aires</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 37 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#0c4a6e">
+        <img src="https://randomuser.me/api/portraits/men/37.jpg" alt="Sebastián Bravo" onerror="this.style.display='none';this.parentElement.textContent='SB'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Sebastián Bravo</div>
+      <div class="client-loc">📍 Rawson, Chubut</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 38 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#134e4a">
+        <img src="https://randomuser.me/api/portraits/women/38.jpg" alt="Ximena Pacheco" onerror="this.style.display='none';this.parentElement.textContent='XP'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Ximena Pacheco</div>
+      <div class="client-loc">📍 Ushuaia, Tierra del Fuego</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 39 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#1c1917">NM</div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Nicolás Mitre</div>
+      <div class="client-loc">📍 San Miguel de Tucumán, Tucumán</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 40 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#3f6212">
+        <img src="https://randomuser.me/api/portraits/women/40.jpg" alt="Cecilia Campos" onerror="this.style.display='none';this.parentElement.textContent='CC'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Cecilia Campos</div>
+      <div class="client-loc">📍 General Roca, Río Negro</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 5</div>
+      <div class="client-paying">Pagando plan</div>
+    </div>
+  </div>
+
+  <!-- Client 41 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#312e81">WR</div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Walter Romero</div>
+      <div class="client-loc">📍 Villa Mercedes, San Luis</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 9</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+  <!-- Client 42 -->
+  <div class="client-item">
+    <div class="client-av-wrap">
+      <div class="client-av" style="background:#701a75">
+        <img src="https://randomuser.me/api/portraits/women/42.jpg" alt="Zulma Ledesma" onerror="this.style.display='none';this.parentElement.textContent='ZL'">
+      </div>
+      <div class="client-verified"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5.5l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+    <div class="client-info">
+      <div class="client-name">Zulma Ledesma</div>
+      <div class="client-loc">📍 La Rioja Capital, La Rioja</div>
+      <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M23,12L20.56,9.22L20.9,5.54L17.29,4.72L15.4,1.54L12,3L8.6,1.54L6.71,4.72L3.1,5.53L3.44,9.21L1,12L3.44,14.78L3.1,18.47L6.71,19.29L8.6,22.47L12,21L15.4,22.46L17.29,19.28L20.9,18.46L20.56,14.78L23,12M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"></path></svg>Verificado</span>
+    </div>
+    <div class="client-right">
+      <div class="client-plan">Cuota 7</div>
+      <div class="client-delivered">Auto entregado</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- GALLERY -->
+<div class="sec-hd">
+  <div class="sec-hd-line"></div>
+  <span class="sec-hd-text">📸 Entregas reales de clientes satisfechos</span>
+</div>
+<div class="gallery-wrap">
+  <div class="gallery-track-outer">
+    <div class="gallery-track">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-2.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-3.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-4.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-5.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-6.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-7.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-8.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-9.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <!-- duplicate for seamless loop -->
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-2.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-3.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-4.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-5.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-6.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-7.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-8.jpeg" alt="Entrega" onerror="this.style.display='none'">
+      <img class="g-img" src="https://supervisor-mundoauto.vercel.app/images/whatsapp-20image-202026-01-06-20at-206-9.jpeg" alt="Entrega" onerror="this.style.display='none'">
+    </div>
+  </div>
+  <div class="gallery-caption">📷 +500 familias felices en toda Argentina 🇦🇷</div>
+</div>
+
+<!-- AFIP -->
+<div class="sec-hd">
+  <div class="sec-hd-line"></div>
+  <span class="sec-hd-text">🔒 Empresa verificada por AFIP</span>
+</div>
+<div class="afip-wrap">
+  <div class="afip-card">
+    <div class="afip-header">✅ Datos oficiales — verificables en afip.gov.ar</div>
+    <div class="afip-row"><span class="afip-key">Razón Social</span><span class="afip-val">MundoAuto Multimarcas S.A.</span></div>
+    <div class="afip-row"><span class="afip-key">CUIT</span><span class="afip-val" style="color:#4ade80;font-weight:800">30-71234681-3</span></div>
+    <div class="afip-row"><span class="afip-key">Tipo</span><span class="afip-val">Sociedad Anónima (S.A.)</span></div>
+    <div class="afip-row"><span class="afip-key">Constituida</span><span class="afip-val">07 de Junio de 2012 (12+ años)</span></div>
+    <div class="afip-row"><span class="afip-key">Domicilio</span><span class="afip-val">Av. Colón 4516, Córdoba</span></div>
+    <div class="afip-row"><span class="afip-key">Constancia AFIP</span><span class="afip-val" style="color:#4ade80">Vigente hasta Oct 2026</span></div>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="sec-hd">
+  <div class="sec-hd-line"></div>
+  <span class="sec-hd-text">📍 Contacto y horarios</span>
+</div>
+<div class="contact-wrap">
+  <div class="contact-grid">
+    <div class="cc"><div class="cc-icon">📞</div><div class="cc-label">WhatsApp</div><div class="cc-val">351-814-5289</div></div>
+    <div class="cc"><div class="cc-icon">📍</div><div class="cc-label">Dirección</div><div class="cc-val">Av. Colón 4516, Córdoba</div></div>
+    <div class="cc"><div class="cc-icon">🕐</div><div class="cc-label">Horarios</div><div class="cc-val">Lun–Vie 10:00–17:00 hs</div></div>
+    <div class="cc"><div class="cc-icon">🇦🇷</div><div class="cc-label">Cobertura</div><div class="cc-val">Todo el país — envíos a domicilio</div></div>
+  </div>
+</div>
+
+<!-- CTA FINAL -->
+<div class="cta-wrap">
+  <div class="cta-card">
+    <h3>¿Listo para tu<br><em style="font-style:italic;color:#60a5fa">próximo auto?</em></h3>
+    <p>Escribime ahora y te asesoro sin compromiso. Te envío el catálogo, elegís el auto que más te gusta y avanzamos juntos en todo el proceso.</p>
+    <a href="https://wa.me/5493518145289?text=%F0%9F%94%A5+%C2%A1Hola+Mariano%21+Vi+tu+perfil+comercial+y+quiero+saber+m%C3%A1s+sobre+los+planes+de+financiaci%C3%B3n.+%C2%BFMe+pods+enviar+el+cat%C3%A1logo%3F"
+       class="btn btn-wa" target="_blank" style="font-size:14.5px;padding:16px">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Escribirle a Mariano ahora
+    </a>
+  </div>
+</div>
+
+<div class="footer">
+  MundoAuto Multimarcas S.A. · CUIT 30-71234681-3<br>
+  Av. Colón 4516, Córdoba · WhatsApp 351-814-5289<br>
+  Lunes a Viernes 10:00–17:00 hs · Respondemos en menos de 5 minutos ✅
+</div>
+
+<script>
+// Review carousel
+const cards = document.querySelectorAll('.rev-card');
+const dotsEl = document.getElementById('rdots');
+let cur = 0, timer;
+
+cards.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'rev-dot' + (i === 0 ? ' on' : '');
+  d.onclick = () => go(i);
+  dotsEl.appendChild(d);
+});
+
+function go(n) {
+  cards[cur].classList.remove('active');
+  dotsEl.children[cur].classList.remove('on');
+  cur = n;
+  cards[cur].classList.add('active');
+  dotsEl.children[cur].classList.add('on');
+}
+
+function next() { go((cur + 1) % cards.length); }
+timer = setInterval(next, 5000);
+const rc = document.getElementById('rc');
+rc.addEventListener('mouseenter', () => clearInterval(timer));
+rc.addEventListener('mouseleave', () => { timer = setInterval(next, 5000); });
+rc.addEventListener('touchstart', () => clearInterval(timer), { passive: true });
+rc.addEventListener('touchend', () => { timer = setInterval(next, 5000); }, { passive: true });
+
+// Countdown & Auto-Extension Logic
+function initCountdown() {
+  const cdD = document.getElementById('cd-d');
+  const cdH = document.getElementById('cd-h');
+  const cdM = document.getElementById('cd-m');
+  const cdS = document.getElementById('cd-s');
+  const timerLabel = document.getElementById('timer-label');
+  const promoTag = document.getElementById('promo-tag');
+  const dynamicDeadlines = document.querySelectorAll('.dynamic-deadline');
+
+  function update() {
+    const now = new Date();
+    
+    // Target: This Friday at 23:59:59
+    let target = new Date();
+    target.setDate(now.getDate() + (5 - now.getDay() + 7) % 7);
+    target.setHours(23, 59, 59, 999);
+
+    // If target has passed (it's late Friday or Saturday/Sunday), 
+    // or if we want to simulate the "extension" after Friday
+    if (now > target) {
+      // Logic for random extension: 1, 2 or 3 days
+      // We use the date as a seed so it's "random" but consistent for the user today
+      const seed = now.getFullYear() + now.getMonth() + now.getDate();
+      const extraDays = (seed % 3) + 1; // 1, 2, or 3
+      
+      target = new Date(target.getTime() + extraDays * 24 * 60 * 60 * 1000);
+      
+      // Update persuasive text
+      const msg = "⚡ ¡EXTENDIMOS LA PROMO! — Cupos limitados";
+      if (promoTag) promoTag.innerText = msg;
+      if (timerLabel) timerLabel.innerText = "⏳ LA PROMO SE EXTENDIÓ POR ÚLTIMOS:";
+      dynamicDeadlines.forEach(el => el.innerText = "¡PROMO EXTENDIDA!");
+    } else {
+      // Normal Friday countdown
+      if (promoTag) promoTag.innerText = "⚡ Oferta exclusiva — Vence el viernes";
+      if (timerLabel) timerLabel.innerText = "⏳ La oferta vence el viernes en:";
+      dynamicDeadlines.forEach(el => el.innerText = "SOLO HASTA EL VIERNES");
+    }
+
+    const diff = target - now;
+    if (diff <= 0) {
+      // Fallback if somehow negative
+      cdD.innerText = "00"; cdH.innerText = "00"; cdM.innerText = "00"; cdS.innerText = "00";
+      return;
+    }
+
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / (1000 * 60)) % 60);
+    const s = Math.floor((diff / 1000) % 60);
+
+    cdD.innerText = d.toString().padStart(2, '0');
+    cdH.innerText = h.toString().padStart(2, '0');
+    cdM.innerText = m.toString().padStart(2, '0');
+    cdS.innerText = s.toString().padStart(2, '0');
+  }
+
+  setInterval(update, 1000);
+  update();
+}
+initCountdown();
+
+// Selección de cuota y envío a WhatsApp
+let selectedPlan = null;
+let selectedCars = [];
+
+function toggleCourseDetails() {
+  const details = document.getElementById('course-details');
+  details.classList.toggle('active');
+  if (details.classList.contains('active')) {
+    details.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function selectPlan(id, name, price, entry, cuotas) {
+  // UI update
+  document.querySelectorAll('.plan').forEach(p => p.classList.remove('active', 'selected-plan'));
+  const planEl = document.getElementById(`plan-${id}`);
+  planEl.classList.add('selected-plan');
+  
+  selectedPlan = { id, name, price, entry, cuotas };
+  updateCartUI();
+  
+  // Scroll to cars
+  document.getElementById('autos-preview-grid').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function toggleCarSelection(el, carName) {
+  const isSelected = !el.classList.contains('selected');
+  
+  // Update the array
+  if (isSelected) {
+    if (!selectedCars.includes(carName)) selectedCars.push(carName);
+  } else {
+    selectedCars = selectedCars.filter(c => c !== carName);
+  }
+  
+  // Sync all cards with this carName (mini-grid and modal-grid)
+  document.querySelectorAll('.auto-card').forEach(card => {
+    const img = card.querySelector('img');
+    if (img && (img.alt === carName || allCars.find(c => c.name === carName)?.img === img.getAttribute('src').split('/').pop())) {
+       if (isSelected) card.classList.add('selected');
+       else card.classList.remove('selected');
+    }
+  });
+  
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const content = document.getElementById('cart-content');
+  const btn = document.getElementById('wa-btn');
+  
+  if (!selectedPlan && selectedCars.length === 0) {
+    content.innerHTML = `<p style="font-size:13px;color:var(--text-faint)">Seleccioná un plan y al menos un auto para continuar...</p>`;
+    btn.style.display = 'none';
+    return;
+  }
+  
+  let html = '';
+  if (selectedPlan) {
+    html += `
+      <div class="cart-item"><span>Plan:</span><span>${selectedPlan.name}</span></div>
+      <div class="cart-item"><span>Entrega:</span><span>${selectedPlan.entry}</span></div>
+      <div class="cart-item"><span>Cuotas:</span><span>${selectedPlan.price}</span></div>
+      <div class="cart-item"><span>Para el retiro:</span><span style="color:#4ade80">${selectedPlan.cuotas} cuotas</span></div>
+    `;
+  }
+  
+  if (selectedCars.length > 0) {
+    html += `<div class="cart-item" style="margin-top:10px">
+      <span style="color:#fff;font-weight:700">Autos seleccionados:</span>
+      <span style="font-size:16px;color:var(--gold);font-weight:900">${selectedCars.length}</span>
+    </div>`;
+  }
+  
+  content.innerHTML = html;
+  
+  if (selectedPlan && selectedCars.length > 0) {
+    btn.style.display = 'flex';
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+const allCars = [
+  { name: 'Hilux SRX 4x4', img: 'WhatsApp Image 2026-05-12 at 8.59.03 PM.jpeg' },
+  { name: 'Fiat Cronos Precision', img: 'WhatsApp Image 2026-05-12 at 8.59.04 PM (1).jpeg' },
+  { name: 'VW Amarok V6 Black', img: 'WhatsApp Image 2026-05-12 at 8.59.04 PM (2).jpeg' },
+  { name: 'Peugeot 208 Feline', img: 'WhatsApp Image 2026-05-12 at 8.59.04 PM (3).jpeg' },
+  { name: 'Ford Ranger Limited', img: 'WhatsApp Image 2026-05-12 at 8.59.04 PM.jpeg' },
+  { name: 'Chevrolet Cruze LTZ', img: 'WhatsApp Image 2026-05-12 at 8.59.05 PM (1).jpeg' },
+  { name: 'Toyota Corolla SEG', img: 'WhatsApp Image 2026-05-12 at 8.59.05 PM (2).jpeg' },
+  { name: 'VW Taos Highline', img: 'WhatsApp Image 2026-05-12 at 8.59.05 PM.jpeg' },
+  { name: 'Jeep Compass Longitude', img: 'WhatsApp Image 2026-05-12 at 8.59.06 PM (1).jpeg' },
+  { name: 'Renault Alaskan Iconic', img: 'WhatsApp Image 2026-05-12 at 8.59.06 PM (2).jpeg' },
+  { name: 'Nissan Frontier PRO-4X', img: 'WhatsApp Image 2026-05-12 at 8.59.06 PM.jpeg' },
+  { name: 'VW Gol Trend', img: 'WhatsApp Image 2026-05-12 at 8.59.07 PM (1).jpeg' },
+  { name: 'Ford Ka Freestyle', img: 'WhatsApp Image 2026-05-12 at 8.59.07 PM (2).jpeg' },
+  { name: 'Fiat Pulse Audace', img: 'WhatsApp Image 2026-05-12 at 8.59.07 PM.jpeg' },
+  { name: 'Toyota SW4 Diamond', img: 'WhatsApp Image 2026-05-12 at 8.59.08 PM (1).jpeg' },
+  { name: 'VW Nivus Highline', img: 'WhatsApp Image 2026-05-12 at 8.59.08 PM (2).jpeg' },
+  { name: 'Renault Sandero Stepway', img: 'WhatsApp Image 2026-05-12 at 8.59.08 PM.jpeg' },
+  { name: 'Ford Maverick Lariat', img: 'WhatsApp Image 2026-05-12 at 8.59.09 PM (1).jpeg' },
+  { name: 'Chevrolet S10 High Country', img: 'WhatsApp Image 2026-05-12 at 8.59.09 PM (2).jpeg' },
+  { name: 'Fiat Toro Freedom', img: 'WhatsApp Image 2026-05-12 at 8.59.09 PM (3).jpeg' },
+  { name: 'Toyota Yaris XLS', img: 'WhatsApp Image 2026-05-12 at 8.59.09 PM.jpeg' },
+  { name: 'VW Polo Track', img: 'WhatsApp Image 2026-05-12 at 8.59.10 PM (1).jpeg' },
+  { name: 'Jeep Renegade Trailhawk', img: 'WhatsApp Image 2026-05-12 at 8.59.10 PM (2).jpeg' },
+  { name: 'Peugeot Partner Patagónica', img: 'WhatsApp Image 2026-05-12 at 8.59.10 PM.jpeg' },
+  { name: 'Citroen C3 Feel', img: 'WhatsApp Image 2026-05-12 at 8.59.11 PM (1).jpeg' },
+  { name: 'Honda HR-V EXL', img: 'WhatsApp Image 2026-05-12 at 8.59.11 PM (2).jpeg' },
+  { name: 'Hyundai Creta Connect', img: 'WhatsApp Image 2026-05-12 at 8.59.11 PM.jpeg' },
+  { name: 'Ford Territory Titanium', img: 'WhatsApp Image 2026-05-12 at 8.59.12 PM (1).jpeg' },
+  { name: 'VW Vento GLI', img: 'WhatsApp Image 2026-05-12 at 8.59.12 PM (2).jpeg' },
+  { name: 'Toyota Etios XLS', img: 'WhatsApp Image 2026-05-12 at 8.59.12 PM.jpeg' },
+  { name: 'MundoAuto Especial', img: 'WhatsApp Image 2026-05-13 at 9.57.59 AM.jpeg' }
+];
+
+function toggleCatalog() {
+  const modal = document.getElementById('modal-catalog');
+  const grid = document.getElementById('catalog-grid');
+  
+  if (modal.classList.contains('active')) {
+    modal.classList.remove('active');
+    document.body.style.overflow = ''; // Restore scroll
+  } else {
+    if (grid.children.length === 0) {
+      allCars.forEach(car => {
+        const card = document.createElement('div');
+        card.className = 'auto-card';
+        // Check if car was already selected in the mini-grid
+        if (selectedCars.includes(car.name)) card.classList.add('selected');
+        
+        card.onclick = () => toggleCarSelection(card, car.name);
+        card.innerHTML = `<img src="autos/${car.img}" alt="${car.name}" loading="lazy">`;
+        grid.appendChild(card);
+      });
+    } else {
+      // Sync selection states if grid already exists
+      Array.from(grid.children).forEach((card, idx) => {
+        if (selectedCars.includes(allCars[idx].name)) {
+          card.classList.add('selected');
+        } else {
+          card.classList.remove('selected');
+        }
+      });
+    }
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent scroll
+  }
+}
+
+function sendSelectionToWA() {
+  if (!selectedPlan || selectedCars.length === 0) return;
+  
+  const phone = "5493518145289";
+  
+  // Create a numbered list showing only the numbers (indices) of the selected cars
+  const carNumbers = selectedCars.map((car, index) => `${index + 1}`).join(', ');
+  
+  const msg = encodeURIComponent(`🚗 ¡Hola Mariano! Acabo de armar mi pedido en la web de MundoAuto.\n\n📋 Mi Selección:\n- Plan: ${selectedPlan.name}\n- Entrega: ${selectedPlan.entry}\n- Financiación: ${selectedPlan.cuotas} cuotas de ${selectedPlan.price}\n\n🚙 Unidades de interés:\nItem(s) seleccionado(s): ${carNumbers}\n\n¿Me podrías asesorar para iniciar la gestión?`);
+  window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+}
+</script>
+</body>
+</html>
