@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Expediente: Compra Segura de Auto</title>
+
+<!-- Open Graph / WhatsApp preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Compra Segura de Auto — Detectá documentación fiscal falsa">
+<meta property="og:description" content="Curso interactivo: aprendé a verificar constancias de inscripción, CUIT y otros documentos antes de comprar un auto usado.">
+<meta property="og:image" content="URL_PUBLICA_DE_LA_IMAGEN_ACA.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta property="og:url" content="URL_DEL_CURSO_ACA">
+<meta name="twitter:card" content="summary_large_image">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Special+Elite&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -622,7 +633,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--t1);min-height:100
         <input class="fld-inp" type="email" id="email" placeholder="tu@email.com" autocomplete="email">
         <div class="err-msg" id="err-email">Ingresá un correo válido</div>
       </div>
-      <p class="fld-cert-note">Estos datos quedarán asentados en el expediente y figurarán en tu certificado oficial. Verificá que sean correctos.</p>
+      <p class="fld-cert-note">Estos datos quedarán protegidos bajo la <a href="https://servicios.infoleg.gob.ar/infolegInternet/anexos/60000-64999/64790/texact.htm" target="_blank" rel="noopener">Ley 25.326</a> y figurarán en tu certificado oficial. Verificá que sean correctos.</p>
       <button class="btn-stamp" id="btn-start" onclick="startTraining()">Abrir expediente →</button>
     </div>
   </div>
@@ -1102,7 +1113,7 @@ const MODULES=[
 // ══════════════════════════════════════════
 const QUIZ=[
   { q:'¿Cuál es el primer paso para verificar que una agencia existe legalmente?',
-    opts:['Buscarla en internet','Pedir el CUIT y verificarlo en ARCA','Por página','Preguntarle a conocidos'],
+    opts:['Buscarla en cualquier lugar','Pedir el CUIT y verificarlo en ARCA','Por página','Preguntarle a conocidos'],
     correct:1, feedback:'El CUIT verificado en ARCA es el primer paso fundamental. Internet o redes sociales son fáciles de falsificar.' },
   { q:'Al firmar un contrato de financiación, ¿qué información debe estar siempre por escrito?',
     opts:['Solo el precio total del auto','La cuota, cantidad de cuotas, fecha de entrega y condiciones del plan','Solo el nombre de la agencia','El número de patente del auto'],
